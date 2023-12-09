@@ -1,0 +1,27 @@
+.voltar {
+  display: flex;
+  align-items: center;
+  margin: 1rem;
+  position: absolute;
+  cursor: pointer;
+}
+
+.icone-voltar {
+  max-width: 2.5rem
+}
+
+.logo {
+  width: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #00a2ff;
+  text-align: center;
+  padding: 1rem;
+}
+
+@media (max-width: 767.98px) {
+  .logo {
+    width: 100%;
+  }
+}
