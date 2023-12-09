@@ -1,0 +1,128 @@
+.container {
+  background-color: #00a2ff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.title {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.cronometro {
+  font-size: 6rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  // font-family: "PixelifySans";
+}
+
+.botoes {
+  flex-direction: row;
+  display: flex;
+}
+
+.botao {
+  width: 90%;
+  font-size: 1.5rem;
+  padding: 10px 20px;
+  margin-bottom: 10px;
+  background-color: white;
+  color: #000000;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.botao:hover {
+  background-color: #e0e0e0;
+}
+
+.marcado {
+  font-size: 20px;
+  margin-bottom: 5px;
+  color: #555;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.containerCarros {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  list-style: none;
+}
+
+.scroll-container {
+  max-height: 280px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.carrosTabela {
+  width: 16%;
+  padding: 5px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.primeiro {
+  background-color: #0df7ff;
+}
+
+.segundo {
+  background-color: #04cac0;
+}
+
+.terceiro {
+  background-color: #06a2c9;
+}
+
+.desabilitado {
+  background-color: #383838;
+  color: #ffffff !important;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .carrosTabela {
+    width: 100%;
+  }
+
+  .cronometro {
+    font-size: 4.5rem;
+  }
+
+  .botoes {
+    flex-direction: column;
+    display: flex;
+  }
+}
+
+@media (max-width: 380px) {
+  .cronometro {
+    font-size: 4rem;
+  }
+
+  .botao {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 330px) {
+  .cronometro {
+    font-size: 3rem;
+  }
+
+  .botao {
+    font-size: 1rem;
+  }
+}
