@@ -1,3 +1,7 @@
+function tokenLocalStorage() {
+  return localStorage.getItem('token');
+}
+
 export default {
-  install(app) {},
+  tokenLocalStorage,
 };

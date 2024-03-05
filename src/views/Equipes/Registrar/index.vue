@@ -159,7 +159,7 @@
 
 <script>
 import { mapActions } from "pinia";
-import { useEquipe } from "../../stores/equipe";
+import { useEquipe } from "../../../stores/equipe";
 
 export default {
   name: "RegistrarEquipes",

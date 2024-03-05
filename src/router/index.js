@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Home from "../views/Home/index.vue";
-import RegistrarEquipes from "../views/RegistrarEquipes/index.vue";
+import RegistrarEquipes from "../views/Equipes/Registrar/index.vue";
+import ListarEquipes from "../views/Equipes/Listar/index.vue";
 import Login from "../views/Login/index.vue";
 import Cronometro from "../views/Cronometro/index.vue";
 import Ranking from "../views/Ranking/index.vue";
@@ -32,6 +33,14 @@ const routes = [
     component: RegistrarEquipes,
     meta: {
       auth: false,
+    },
+  },
+  {
+    path: "/listarequipes",
+    name: "ListarEquipes",
+    component: ListarEquipes,
+    meta: {
+      auth: true,
     },
   },
   {

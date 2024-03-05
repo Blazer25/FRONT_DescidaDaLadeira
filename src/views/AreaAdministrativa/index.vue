@@ -16,12 +16,12 @@
       <BotaoPadrao
         class="mb-05 altura-botao"
         :texto="'Registrar equipes'"
-        @click="redirecionar('registrar')"
+        @click="redirecionar('registrarEquipes')"
       />
       <BotaoPadrao
         class="mb-05 altura-botao"
         :texto="'Listar Equipes'"
-        @click="redirecionar('registrar')"
+        @click="redirecionar('listarEquipes')"
       />
       <BotaoPadrao
         v-if="!usuarioLogado"
@@ -61,9 +61,10 @@ export default {
     redirecionar(pagina) {
       const rotas = {
         cronometro: "/cronometro",
-        registrar: "/registrarEquipes",
+        registrarEquipes: "/registrarequipes",
         login: "/login",
         ranking: "/ranking",
+        listarEquipes: "/listarequipes",
       };
 
       const rotaDestino = rotas[pagina];

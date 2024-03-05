@@ -38,8 +38,10 @@ export default {
   },
 
   async mounted() {
-    const auth = useAuth();
-    this.usuarioLogado = await auth.verificarToken();
+    if (this.$functions.tokenLocalStorage()) {
+      const auth = useAuth();
+      this.usuarioLogado = await auth.verificarToken();
+    }
   },
 
   methods: {

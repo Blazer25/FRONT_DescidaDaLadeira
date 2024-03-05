@@ -16,7 +16,17 @@ export const useEquipe = defineStore("equipe", () => {
     }
   }
 
+  async function listarEquipes() {
+    try {
+      return await http.get("/equipe/listar", null);
+    } catch (error) {
+      return error;
+    }
+  }
+  
+
   return {
     registrarEquipe,
+    listarEquipes
   };
 });

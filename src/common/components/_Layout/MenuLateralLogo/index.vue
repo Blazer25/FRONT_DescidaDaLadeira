@@ -5,7 +5,6 @@
       alt="Voltar"
       class="icone-voltar"
     />
-    <!-- <span> VOLTAR</span> -->
   </div>
   <div class="logo">
     <img

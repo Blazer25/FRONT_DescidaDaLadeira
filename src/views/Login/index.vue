@@ -52,6 +52,13 @@ export default {
 
   computed: {},
 
+  async mounted() {
+    if (this.$functions.tokenLocalStorage()) {
+      const auth = useAuth();
+      this.usuarioLogado = await auth.verificarToken();
+    }
+  },
+
   methods: {
     async enviarLogin() {
       const dados = {

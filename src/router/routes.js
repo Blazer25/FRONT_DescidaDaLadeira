@@ -1,13 +1,12 @@
 import { useAuth } from "../stores/auth";
 
 export default async function routes(to, from, next) {
+  const rotasNaoVerificar = ["Home_", "Home", "RegistrarEquipes", "Login"];
   if (
-    to.name === "Home_" ||
-    to.name === "Home" ||
-    to.name === "RegistrarEquipes"
+    rotasNaoVerificar.includes(to.name)
   ) {
     next();
-    return null;
+    return;
   }
   const auth = useAuth();
   const autenticado = await auth.verificarToken();
