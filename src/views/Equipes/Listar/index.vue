@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <div class="container">
+    <MenuLateralLogo />
     <AvisoPadrao
       v-if="mensagemErro"
       :mensagem="mensagemErro"
@@ -7,21 +8,62 @@
       @fechar-aviso="limparMensagemErro()"
     >
     </AvisoPadrao>
-    <TabelaPadrao
-      v-if="dados.length"
-      :colunas="colunas"
-      :dados="dados"
-      :opcoesDropdown="opcoesDropdown"
-      @eventoTabela="eventoTabela"
-    />
 
-    <p v-else>Nenhuma existem equipes para serem exibidas!</p>
+    <div class="tabela">
+      <TabelaPadrao
+        v-if="dados.length"
+        :colunas="colunas"
+        :dados="dados"
+        :opcoesSelect="opcoesSelect"
+        @eventoTabela="eventoTabela"
+      />
 
-    <ModalPadrao
-      v-if="modais.visaoGeral"
-      @fechar-modal="modais.visaoGeral = false"
-    >
-      <p v-if="equipeSelecionada">{{ equipeSelecionada }}</p>
+      <p v-else>Não existem equipes para serem listadas!</p>
+    </div>
+
+    <ModalPadrao v-if="modais.editar" @fechar-modal="fecharModalEditar">
+      <p class="fonte1p3 mb-1 texto-negrito">Editar informações da equipe:</p>
+
+      <InputPadrao
+        class="mb-1"
+        :value="equipeSelecionada.codigo || '-'"
+        :descricao="'Código da equipe:'"
+        :disabled="true"
+      />
+
+      <InputPadrao
+        class="mb-1"
+        :value="equipeSelecionada.quantidadeIntegrantes"
+        :descricao="'Quantidade de integrantes:'"
+        :disabled="true"
+      />
+
+      <InputPadrao
+        class="mb-1"
+        :value="equipeSelecionada.nome"
+        :descricao="'Nome da equipe:'"
+      />
+
+      <p class="fonte1p3 mb-1 texto-negrito">Integrantes:</p>
+
+      <span
+        v-for="(integrante, index) in equipeSelecionada.integrantes"
+        :key="index"
+        class="fonte1p3 mb-1"
+      >
+        <div :class="index !== 0 && 'mt-3'">
+          <InputPadrao
+            class="mb-1"
+            :value="integrante.nome"
+            :descricao="`Nome do ${index + 1} integrante`"
+          />
+          <InputPadrao
+            class="mb-1"
+            :value="integrante.RA"
+            :descricao="`RA do ${index + 1} integrante`"
+          />
+        </div>
+      </span>
     </ModalPadrao>
   </div>
 </template>
@@ -36,11 +78,7 @@ export default {
   data() {
     return {
       equipeSelecionada: null,
-      opcoesDropdown: [
-        {
-          texto: "Visão geral",
-          valor: "visaoGeralEquipe",
-        },
+      opcoesSelect: [
         {
           texto: "Editar equipe",
           valor: "editarEquipe",
@@ -57,7 +95,7 @@ export default {
       dados: [],
       mensagemErro: "",
       modais: {
-        visaoGeral: false,
+        editar: false,
       },
     };
   },
@@ -71,8 +109,8 @@ export default {
     eventoTabela(evento) {
       this.equipeSelecionada = evento.itens || null;
       const eventoSelecionado = evento?.evento?.target?.value;
-      if (eventoSelecionado === "visaoGeralEquipe") {
-        this.modais.visaoGeral = true;
+      if (eventoSelecionado === "editarEquipe") {
+        this.modais.editar = true;
       }
     },
 
@@ -89,6 +127,15 @@ export default {
 
     limparMensagemErro() {
       this.mensagemErro = "";
+    },
+
+    limparEquipeSelecionada() {
+      this.equipeSelecionada = null;
+    },
+
+    fecharModalEditar() {
+      this.modais.editar = false;
+      this.limparEquipeSelecionada();
     },
   },
 };
