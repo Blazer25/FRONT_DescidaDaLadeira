@@ -93,47 +93,21 @@
           <span class="texto-negrito">Nome da equipe:</span>
           {{ formEquipe.nome }}
         </p>
-        <p class="fonte1p3">
+        <p class="fonte1p3 mb-1">
           <span class="texto-negrito">Número de integrantes:</span>
           {{ formEquipe.quantidadeIntegrantes }}
         </p>
 
-        <p class="fonte1p3 texto-negrito mt-1 mb-1">Integrantes:</p>
-
-        <div class="fonte1p3 mb-1">
-          <p>
-            {{ formEquipe.integrantes[1].nomeCompleto }}
-          </p>
-          <p>RA: {{ formEquipe.integrantes[1].RA }}</p>
-        </div>
-
-        <div class="fonte1p3 mb-1" v-if="formEquipe.integrantes[2].ativo">
-          <p>
-            {{ formEquipe.integrantes[2].nomeCompleto }}
-          </p>
-          <p>RA: {{ formEquipe.integrantes[2].RA }}</p>
-        </div>
-
-        <div class="fonte1p3 mb-1" v-if="formEquipe.integrantes[3].ativo">
-          <p>
-            {{ formEquipe.integrantes[3].nomeCompleto }}
-          </p>
-          <p>RA: {{ formEquipe.integrantes[3].RA }}</p>
-        </div>
-
-        <div class="fonte1p3 mb-1" v-if="formEquipe.integrantes[4].ativo">
-          <p>
-            {{ formEquipe.integrantes[4].nomeCompleto }}
-          </p>
-          <p>RA: {{ formEquipe.integrantes[4].RA }}</p>
-        </div>
-
-        <div class="fonte1p3 mb-1" v-if="formEquipe.integrantes[5].ativo">
-          <p>
-            {{ formEquipe.integrantes[5].nomeCompleto }}
-          </p>
-          <p>RA: {{ formEquipe.integrantes[5].RA }}</p>
-        </div>
+        <p
+          v-for="(integrante, index) in formEquipe.integrantes"
+          :key="index"
+          class="fonte1p3 mb-1"
+        >
+          <div v-if="integrante.ativo">
+            <p>{{ integrante.nomeCompleto }}</p>
+            <p>RA: {{ integrante.RA }}</p>
+          </div>
+        </p>
 
         <div class="mt-1">
           <BotaoPadrao
