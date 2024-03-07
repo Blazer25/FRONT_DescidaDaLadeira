@@ -56,6 +56,10 @@ export default {
     if (this.$functions.tokenLocalStorage()) {
       const auth = useAuth();
       this.usuarioLogado = await auth.verificarToken();
+
+      if (this.usuarioLogado) {
+        this.$router.push("/home");
+      }
     }
   },
 
