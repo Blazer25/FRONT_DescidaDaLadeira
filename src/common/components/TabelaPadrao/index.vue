@@ -13,11 +13,11 @@
           <td v-for="(campo, campoIndex) in colunas" :key="campoIndex">
             {{ row[campo.name] }}
           </td>
-          <DropDownPadrao
-            @dropDownSelecionar="dropDownSelecionar"
-            v-if="opcoesDropdown.length"
+          <SelectPadrao
+            @selectOpcoes="selectOpcoes"
+            v-if="opcoesSelect.length"
             :linha="row"
-            :opcoes="opcoesDropdown"
+            :opcoes="opcoesSelect"
           />
         </tr>
       </tbody>
@@ -30,9 +30,7 @@ export default {
   name: "tabelaPadrao",
 
   data() {
-    return {
-      opcoesTeste: [{ valor: "opcao1", texto: "Opção 1" }],
-    };
+    return {};
   },
 
   props: {
@@ -44,7 +42,7 @@ export default {
       type: Array,
       required: true,
     },
-    opcoesDropdown: {
+    opcoesSelect: {
       type: Array,
       required: false,
       default: [],
@@ -52,7 +50,7 @@ export default {
   },
 
   methods: {
-    dropDownSelecionar(evento) {
+    selectOpcoes(evento) {
       this.$emit("eventoTabela", evento);
     },
   },
