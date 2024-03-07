@@ -1,23 +1,29 @@
 <template>
   <div class="container">
-<MenuLateralLogo :ocultarVoltar="true"/>
+    <MenuLateralLogo :ocultarVoltar="true" />
 
     <div class="informacoes">
-      <BotaoPadrao
-        class="mb-05 altura-botao"
-        :texto="'Registrar equipes'"
-        @click="redirecionar('registrar')"
-      />
-      <BotaoPadrao
+      <MiniCardPadrao
         v-if="!usuarioLogado"
-        class="altura-botao"
+        :caminhoLogo="'/src/assets/images/icones/register.svg'"
+        :texto="'Registrar equipes'"
+        @click="redirecionar('registrarEquipes')"
+      />
+      <MiniCardPadrao
+        v-if="!usuarioLogado"
+        :caminhoLogo="'/src/assets/images/icones/login.svg'"
         :texto="'Login'"
         @click="redirecionar('login')"
       />
-
-      <BotaoPadrao
+      <MiniCardPadrao
         v-if="usuarioLogado"
-        class="altura-botao"
+        :caminhoLogo="'/src/assets/images/icones/adm.svg'"
+        :texto="'Área Admin'"
+        @click="redirecionar('areaadministrativa')"
+      />
+      <MiniCardPadrao
+        v-if="usuarioLogado"
+        :caminhoLogo="'/src/assets/images/icones/logout.svg'"
         :texto="'Sair'"
         @click="deslogarUsuario"
       />
@@ -47,8 +53,9 @@ export default {
   methods: {
     redirecionar(pagina) {
       const rotas = {
-        registrar: "/registrarEquipes",
+        registrarEquipes: "/registrarEquipes",
         login: "/login",
+        areaadministrativa: "/areaadministrativa"
       };
 
       const rotaDestino = rotas[pagina];

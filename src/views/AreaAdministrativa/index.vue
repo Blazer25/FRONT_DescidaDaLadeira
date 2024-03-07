@@ -1,41 +1,47 @@
 <template>
   <div class="container">
-    <MenuLateralLogo />
+    <MenuLateralLogo :ocultarVoltar="true" />
 
-    <div class="informacoes">
-      <BotaoPadrao
-        class="mb-05 altura-botao"
-        :texto="'Ranking'"
-        @click="redirecionar('ranking')"
-      />
-      <BotaoPadrao
-        class="mb-05 altura-botao"
-        :texto="'Cronômetro'"
-        @click="redirecionar('cronometro')"
-      />
-      <BotaoPadrao
-        class="mb-05 altura-botao"
-        :texto="'Registrar equipes'"
-        @click="redirecionar('registrarEquipes')"
-      />
-      <BotaoPadrao
-        class="mb-05 altura-botao"
-        :texto="'Listar Equipes'"
-        @click="redirecionar('listarEquipes')"
-      />
-      <BotaoPadrao
-        v-if="!usuarioLogado"
-        class="altura-botao"
-        :texto="'Login'"
-        @click="redirecionar('login')"
-      />
-
-      <BotaoPadrao
-        v-if="usuarioLogado"
-        class="altura-botao"
-        :texto="'Sair'"
-        @click="deslogarUsuario"
-      />
+    <div class="centralizador">
+      <div class="w-100">
+        <div class="informacoes">
+          <MiniCardPadrao
+            :caminhoLogo="'/src/assets/images/icones/ranking.svg'"
+            :texto="'Ranking'"
+            @click="redirecionar('ranking')"
+          />
+          <MiniCardPadrao
+            :caminhoLogo="'/src/assets/images/icones/clock.svg'"
+            :texto="'Cronômetro'"
+            @click="redirecionar('cronometro')"
+          />
+          <MiniCardPadrao
+            :caminhoLogo="'/src/assets/images/icones/register.svg'"
+            :texto="'Registrar equipes'"
+            @click="redirecionar('registrarEquipes')"
+          />
+        </div>
+        <br />
+        <div class="informacoes">
+          <MiniCardPadrao
+            :caminhoLogo="'/src/assets/images/icones/team.svg'"
+            :texto="'Listar Equipes'"
+            @click="redirecionar('listarEquipes')"
+          />
+          <MiniCardPadrao
+            v-if="!usuarioLogado"
+            :caminhoLogo="'/src/assets/images/icones/login.svg'"
+            :texto="'Login'"
+            @click="redirecionar('login')"
+          />
+          <MiniCardPadrao
+            v-if="usuarioLogado"
+            :caminhoLogo="'/src/assets/images/icones/logout.svg'"
+            :texto="'Sair'"
+            @click="deslogarUsuario"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
