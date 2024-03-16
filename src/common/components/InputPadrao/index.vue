@@ -87,7 +87,7 @@ export default {
 
   methods: {
     atualizaInput(event) {
-      this.$emit("input", event.target.value);
+      this.$emit("input:padrao", event.target.value);
     },
   },
 };

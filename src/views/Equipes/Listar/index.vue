@@ -12,6 +12,7 @@
     <div class="tabela">
       <TabelaPadrao
         v-if="dados.length"
+        :key="atualizadorTabela"
         :colunas="colunas"
         :dados="dados"
         :opcoesSelect="opcoesSelect"
@@ -26,7 +27,7 @@
 
       <InputPadrao
         class="mb-1"
-        :value="equipeSelecionada.codigo || '-'"
+        :value="equipeSelecionada.codigo"
         :descricao="'Código da equipe:'"
         :disabled="true"
       />
@@ -41,6 +42,7 @@
       <InputPadrao
         class="mb-1"
         :value="equipeSelecionada.nome"
+        @input:padrao="atualizarNomeEquipe"
         :descricao="'Nome da equipe:'"
       />
 
@@ -55,15 +57,23 @@
           <InputPadrao
             class="mb-1"
             :value="integrante.nome"
-            :descricao="`Nome do ${index + 1} integrante`"
+            @input:padrao="atualizarNomeIntegrante(index, $event)"
+            :descricao="`Nome do ${index + 1}° integrante`"
+            :disabled="!integrante.nome ? true : false"
           />
           <InputPadrao
             class="mb-1"
             :value="integrante.RA"
-            :descricao="`RA do ${index + 1} integrante`"
+            @input:padrao="atualizarRaIntegrante(index, $event)"
+            :descricao="`RA do ${index + 1}° integrante`"
           />
         </div>
       </span>
+      <BotaoPadrao
+        class="botao"
+        :texto="'Editar'"
+        @click:botaoPadrao="editarEquipe"
+      />
     </ModalPadrao>
   </div>
 </template>
@@ -78,25 +88,28 @@ export default {
   data() {
     return {
       equipeSelecionada: null,
+      cloneEquipeSelecionada: null,
       opcoesSelect: [
         {
           texto: "Editar equipe",
           valor: "editarEquipe",
         },
         {
-          texto: "Excluir equipe",
-          valor: "excluirEquipe",
+          texto: "Inativar/ativar equipe",
+          valor: "inativarAtivarEquipe",
         },
       ],
       colunas: [
         { name: "nome", label: "Nome" },
         { name: "quantidadeIntegrantes", label: "Quantidade de Integrantes" },
+        { name: "ativa", label: "Ativa" },
       ],
       dados: [],
       mensagemErro: "",
       modais: {
         editar: false,
       },
+      atualizadorTabela: 0,
     };
   },
 
@@ -104,10 +117,12 @@ export default {
     this.carregarEquipes();
   },
   methods: {
-    ...mapActions(useEquipe, ["listarEquipes"]),
+    ...mapActions(useEquipe, ["listarEquipes", "alterarEquipe"]),
 
     eventoTabela(evento) {
-      this.equipeSelecionada = evento.itens || null;
+      this.atualizadorTabela++;
+      this.equipeSelecionada = evento.itens;
+      this.cloneEquipeSelecionada = { ...evento.itens };
       const eventoSelecionado = evento?.evento?.target?.value;
       if (eventoSelecionado === "editarEquipe") {
         this.modais.editar = true;
@@ -117,7 +132,8 @@ export default {
     async carregarEquipes() {
       const resultado = await this.listarEquipes({});
       if (resultado.status === 200) {
-        this.dados = resultado.data.equipes;
+        const equipes = resultado.data.equipes;
+        this.formatarEquipes(equipes);
       } else {
         this.mensagemErro =
           resultado?.response?.data?.mensagem ||
@@ -131,11 +147,68 @@ export default {
 
     limparEquipeSelecionada() {
       this.equipeSelecionada = null;
+      this.cloneEquipeSelecionada = null;
     },
 
     fecharModalEditar() {
       this.modais.editar = false;
       this.limparEquipeSelecionada();
+    },
+
+    formatarEquipes(equipes) {
+      this.dados = equipes.map((equipe) => {
+        return { ...equipe, ativa: equipe.ativa ? "Sim" : "Não" };
+      });
+    },
+
+    atualizarNomeEquipe(nome) {
+      this.equipeSelecionada.nome = nome;
+    },
+
+    atualizarNomeIntegrante(index, nome) {
+      this.equipeSelecionada.integrantes[index].nome = nome;
+    },
+
+    atualizarRaIntegrante(index, RA) {
+      this.equipeSelecionada.integrantes[index].RA = RA;
+    },
+
+    prepararDadosAlterarEquipe() {
+      const membrosEquipe = this.equipeSelecionada.integrantes;
+      const membrosEquipeClone = [...this.cloneEquipeSelecionada.integrantes];
+
+      const codigoEquipe = this.equipeSelecionada.codigo;
+      const nomeEquipe = this.equipeSelecionada.nome;
+
+      const dadosIntegrantes = membrosEquipe.map((membro, index) => {
+        return {
+          RA_Atual: membrosEquipeClone[index].RA,
+          RA: membro.RA,
+          nome: membro.nome,
+        };
+      });
+
+      console.log({ codigoEquipe });
+      console.log({ nomeEquipe });
+      console.log({ dadosIntegrantes });
+
+      return {
+        codigoEquipe,
+        nomeEquipe,
+        dadosIntegrantes,
+      };
+    },
+
+    async editarEquipe() {
+      const { codigoEquipe, nomeEquipe, dadosIntegrantes } =
+        this.prepararDadosAlterarEquipe();
+
+      const resultado = await this.alterarEquipe({
+        codigoEquipe,
+        nomeEquipe,
+        dadosIntegrantes,
+      });
+      console.log(resultado)
     },
   },
 };

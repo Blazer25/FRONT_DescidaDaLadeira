@@ -10,7 +10,7 @@ export const useEquipe = defineStore("equipe", () => {
         integrantes,
       };
 
-      return await http.post("/equipe/registrar", dados);
+      return await http.post("/equipe", dados);
     } catch (error) {
       return error;
     }
@@ -18,15 +18,28 @@ export const useEquipe = defineStore("equipe", () => {
 
   async function listarEquipes() {
     try {
-      return await http.get("/equipe/listar", null);
+      return await http.get("/equipes", null);
     } catch (error) {
       return error;
     }
   }
-  
+
+  async function alterarEquipe({ codigoEquipe, nomeEquipe, dadosIntegrantes }) {
+    try {
+      const dados = {
+        nomeEquipe,
+        dadosIntegrantes,
+      };
+
+      return await http.patch(`/equipe/alterar/${codigoEquipe}`, dados);
+    } catch (error) {
+      return error;
+    }
+  }
 
   return {
     registrarEquipe,
-    listarEquipes
+    listarEquipes,
+    alterarEquipe,
   };
 });

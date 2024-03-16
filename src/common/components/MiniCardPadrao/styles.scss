@@ -22,3 +22,35 @@
     text-align: center;
   }
 }
+
+@media (max-width: 767.98px) {
+  .card-area {
+  
+    width: 8rem;
+    height: 8rem;
+  
+    .icone {
+      width: 4rem;
+    }
+  
+    .texto {
+      font-size: 1.6rem;
+    }
+  }
+}
+
+@media (max-width: 470px) {
+  .card-area {
+  
+    width: 6.5rem;
+    height: 6.5rem;
+  
+    .icone {
+      width: 3rem;
+    }
+  
+    .texto {
+      font-size: 1.3rem;
+    }
+  }
+}
