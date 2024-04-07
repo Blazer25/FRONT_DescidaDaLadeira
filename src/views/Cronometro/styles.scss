@@ -1,3 +1,52 @@
+.selecao-equipes {
+  height: 100svh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+
+  .titulo {
+    margin: 2rem 2rem 0 2rem;
+    text-align: center;
+  }
+
+  .container-equipes {
+    padding: 3rem;
+
+    .selecionar-equipes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+    }
+
+    .selecionar-equipes > * {
+      flex-basis: calc(20% - 20px);
+      margin-bottom: 10px;
+      padding: 20px;
+      text-align: center;
+    }
+  }
+
+  .botoes {
+    flex-direction: row;
+    gap: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .container-equipes {
+    .selecionar-equipes > * {
+      flex-basis: calc(33.33% - 20px);
+    }
+  }
+
+  .botoes {
+    flex-direction: column !important;
+  }
+}
+
 .container {
   background-color: #00a2ff;
   display: flex;

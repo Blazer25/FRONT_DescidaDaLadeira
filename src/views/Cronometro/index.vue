@@ -1,22 +1,56 @@
 <template>
-  <div class="container">
-    <!-- <div class="item"> -->
-    <!-- <button
+  <div class="selecao-equipes" v-if="!cronometroVisivel">
+    <div class="titulo" v-if="equipes.length">
+      <span>SELECIONE AS EQUIPES PARA PARTICIPAREM DA CORRIDA</span>
+    </div>
+    <div class="container-equipes">
+      <div class="selecionar-equipes" v-if="equipes.length">
+        <span v-for="(equipe, index) in equipes" :key="index">
+          <SelecionarEquipes
+            @click="selecionarEquipe(index)"
+            :equipe="{
+              nome: equipe.nome,
+              img: 'https://img.freepik.com/psd-gratuitas/carro-em-miniatura-sedan_53876-84522.jpg',
+            }"
+          >
+          </SelecionarEquipes>
+        </span>
+      </div>
+      <div v-else><span>EQUIPES NÃO FORAM ENCONTRADAS PARA SEREM SELECIONADAS!</span></div>
+    </div>
+    <div class="d-flex justify-content-center botoes">
+      <BotaoPadrao
+        class=""
+        :texto="'Voltar'"
+        @click="navegarPara('areaadministrativa')"
+      />
+      <BotaoPadrao
+        class=""
+        :texto="'Ir para o cronômetro'"
+        @click="exibirCronometro"
+        :disabled="!equipes.length || !equipesSelecionadas.length"
+      />
+    </div>
+  </div>
+
+  <div class="container" v-if="cronometroVisivel">
+    <div class="item">
+      <button
         style="width: 6rem; margin-top: 1.5rem"
         class="botao"
         @click="navegarPara('home')"
       >
         Voltar
-      </button> -->
-    <!-- </div> -->
-    <!-- <button
+      </button>
+    </div>
+    <button
       class="botao"
       @click="registrarCarrinhos"
       :disabled="!temposMarcados.length"
       :class="[{ desabilitado: !temposMarcados.length }]"
     >
       Registrar
-    </button> -->
+    </button>
 
     <!-- <h1 class="title">Cronômetro da Corrida</h1> -->
     <div class="cronometro">{{ formatarTempo(tempoAtual) }}</div>
@@ -47,7 +81,7 @@
       </button>
     </div>
 
-    <!-- <div class="scroll-container">
+    <div class="scroll-container">
       <ul class="containerCarros">
         <li
           v-for="(tempo, index) in temposMarcados"
@@ -62,18 +96,24 @@
           {{ `${index + 1}° Carro: ${formatarTempo(tempo)}` }}
         </li>
       </ul>
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import { mapActions } from "pinia";
+import { useEquipe } from "../../stores/equipe";
 
 export default {
   name: "Cronometro",
 
   data() {
     return {
+      equipes: [],
+      mensagemErro: "",
+      equipesSelecionadas: [],
+      cronometroVisivel: false,
+
       tempoAtual: 0,
       cronometroRodando: false,
       cronometroInterval: null,
@@ -94,15 +134,51 @@ export default {
   },
 
   mounted() {
+    this.carregarEquipes();
     // await this.sortCarros();
   },
 
   created() {},
 
   methods: {
-    iniciarCorrida() {
-      this.temposMarcados = [];
+    ...mapActions(useEquipe, ["listarEquipes"]),
 
+    async carregarEquipes() {
+      const resultado = await this.listarEquipes({ filtros: { ativas: true } });
+      if (resultado.status === 200) {
+        this.equipes = resultado.data.equipes;
+      } else {
+        this.mensagemErro =
+          resultado?.response?.data?.mensagem ||
+          "Erro inesperado, tente listar as equipes em outro momento, ou verifique sua conexão com a rede!";
+      }
+    },
+
+    selecionarEquipe(index) {
+      const equipeEncontrada = this.equipes[index];
+
+      const equipeJaSelecionada = this.equipesSelecionadas.find(
+        (equipe) => equipe.codigo === equipeEncontrada.codigo
+      );
+
+      if (equipeJaSelecionada) {
+        this.equipesSelecionadas = this.equipesSelecionadas.filter(
+          (equipe) => equipe.codigo !== equipeEncontrada.codigo
+        );
+        return;
+      }
+      this.equipesSelecionadas.push(equipeEncontrada);
+    },
+
+    exibirCronometro() {
+      this.cronometroVisivel = true;
+    },
+
+    fecharCronometro() {
+      this.cronometroVisivel = false;
+    },
+
+    iniciarCorrida() {
       clearInterval(this.cronometroInterval);
       this.tempoAtual = 0;
       this.cronometroRodando = true;

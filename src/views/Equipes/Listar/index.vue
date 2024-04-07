@@ -88,7 +88,6 @@ export default {
   data() {
     return {
       equipeSelecionada: null,
-      cloneEquipeSelecionada: null,
       opcoesSelect: [
         {
           texto: "Editar equipe",
@@ -115,17 +114,30 @@ export default {
 
   mounted() {
     this.carregarEquipes();
+    this.resetarState();
   },
   methods: {
-    ...mapActions(useEquipe, ["listarEquipes", "alterarEquipe"]),
+    ...mapActions(useEquipe, [
+      "listarEquipes",
+      "alterarEquipe",
+      "inativarAtivarEquipe",
+      "setEquipeSelecionada",
+      "retornarState",
+      "resetarState",
+    ]),
 
     eventoTabela(evento) {
       this.atualizadorTabela++;
       this.equipeSelecionada = evento.itens;
-      this.cloneEquipeSelecionada = { ...evento.itens };
+      this.setEquipeSelecionada(this.equipeSelecionada);
+
       const eventoSelecionado = evento?.evento?.target?.value;
       if (eventoSelecionado === "editarEquipe") {
         this.modais.editar = true;
+      }
+
+      if (eventoSelecionado === "inativarAtivarEquipe") {
+        this.ativarInativarEquipe();
       }
     },
 
@@ -147,7 +159,6 @@ export default {
 
     limparEquipeSelecionada() {
       this.equipeSelecionada = null;
-      this.cloneEquipeSelecionada = null;
     },
 
     fecharModalEditar() {
@@ -175,22 +186,20 @@ export default {
 
     prepararDadosAlterarEquipe() {
       const membrosEquipe = this.equipeSelecionada.integrantes;
-      const membrosEquipeClone = [...this.cloneEquipeSelecionada.integrantes];
 
       const codigoEquipe = this.equipeSelecionada.codigo;
       const nomeEquipe = this.equipeSelecionada.nome;
 
       const dadosIntegrantes = membrosEquipe.map((membro, index) => {
+        const equipeLocalStorage = JSON.parse(
+          localStorage.getItem("equipeSelecionada")
+        );
         return {
-          RA_Atual: membrosEquipeClone[index].RA,
+          RA_Atual: equipeLocalStorage?.integrantes[index]?.RA || membro.RA,
           RA: membro.RA,
           nome: membro.nome,
         };
       });
-
-      console.log({ codigoEquipe });
-      console.log({ nomeEquipe });
-      console.log({ dadosIntegrantes });
 
       return {
         codigoEquipe,
@@ -208,7 +217,20 @@ export default {
         nomeEquipe,
         dadosIntegrantes,
       });
-      console.log(resultado)
+
+      if (resultado.status === 201) {
+        this.fecharModalEditar();
+        await this.carregarEquipes();
+      }
+    },
+
+    async ativarInativarEquipe() {
+      const codigoEquipe = this.equipeSelecionada.codigo;
+      const resultado = await this.inativarAtivarEquipe({ codigoEquipe });
+
+      if (resultado.status === 200) {
+        await this.carregarEquipes();
+      }
     },
   },
 };
