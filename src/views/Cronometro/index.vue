@@ -40,7 +40,7 @@
         <BotaoPadrao :texto="'Voltar'" @click="fecharCronometro" />
         <BotaoPadrao
           :texto="'Resetar'"
-          @click="resetarCronometro"
+          @click="resetarCorrida"
           :disabled="!cronometroIniciou"
         />
         <BotaoPadrao
@@ -67,21 +67,48 @@
 
       <BotaoPadrao
         class="botao-registrar"
-        :texto="'Registrar Corrida'"
-        @click="salvarCorrida"
-        :disabled="!cronometroIniciou"
+        :texto="'Selecionar Equipes'"
+        @click="abrirModalSetarTemposEquipes"
+        :disabled="!cronometroIniciou || !temposMarcados.length"
       />
     </div>
     <div class="coluna-direita">
       <div
         class="linha-tempo"
-        v-for="(tempo, index) in temposMarcados"
-        :key="tempo"
+        v-for="(tempoMarcado, index) in temposMarcados"
+        :key="index"
       >
-        <span>{{ `${index + 1}° ${formatarTempo(tempo)}` }}</span>
+        <span>{{ `${index + 1}° ${formatarTempo(tempoMarcado.tempo)}` }}</span>
       </div>
     </div>
   </div>
+  <ModalPadrao
+    v-if="exibirModalSetarTemposEquipes"
+    @fechar-modal="definirModalSetarTemposEquipes"
+  >
+    <div class="titulo-modal">
+      <span> PARA CADA TEMPO, SELECIONE SUA RESPECTIVA EQUIPE</span>
+    </div>
+    <div
+      class="linha-tempo"
+      v-for="(tempoMarcado, index) in temposMarcados"
+      :key="index"
+    >
+      {{ `${index + 1}° ${formatarTempo(tempoMarcado.tempo)}` }}
+      <SelectPadrao
+        :opcoes="formatarEquipesSelect"
+        :placeholder="'Selecione a equipe'"
+        :linha="index"
+        @selectOpcoes="setarEquipesTempos"
+      />
+    </div>
+
+    <BotaoPadrao
+      :texto="'Salvar corrida'"
+      @click="salvarCorrida"
+      :disabled="todosTemposPossuemEquipes"
+    />
+  </ModalPadrao>
 </template>
 
 <script>
@@ -105,6 +132,7 @@ export default {
       cronometroIniciou: false,
       cronometroInterval: null,
       temposMarcados: [],
+      exibirModalSetarTemposEquipes: false,
 
       corridaGravar: {
         dataHoraInicio: null,
@@ -121,9 +149,31 @@ export default {
 
   created() {},
 
+  computed: {
+    formatarEquipesSelect() {
+      return this.equipesSelecionadas.map((equipe) => {
+        return {
+          texto: equipe.nome,
+          valor: equipe.codigo,
+        };
+      });
+    },
+
+    todosTemposPossuemEquipes() {
+      return this.temposMarcados.some((tempo) => !tempo.equipe);
+    },
+  },
+
   methods: {
     ...mapActions(useEquipe, ["listarEquipes"]),
     ...mapActions(useCorrida, ["registrarCorrida"]),
+
+    resetarCorrida() {
+      this.fecharCronometro();
+      this.exibirModalSetarTemposEquipes = false;
+      this.temposMarcados = [];
+      this.equipesSelecionadas = [];
+    },
 
     async carregarEquipes() {
       const resultado = await this.listarEquipes({ filtros: { ativas: true } });
@@ -179,7 +229,10 @@ export default {
     },
 
     marcarTempo() {
-      this.temposMarcados.push(this.tempoAtual);
+      this.temposMarcados.push({
+        tempo: this.tempoAtual,
+        equipe: null,
+      });
     },
 
     resetarCronometro() {
@@ -205,30 +258,65 @@ export default {
       this.cronometroPausado = true;
     },
 
+    abrirModalSetarTemposEquipes() {
+      this.pausarCronometro();
+
+      this.exibirModalSetarTemposEquipes = true;
+    },
+
     async salvarCorrida() {
       this.prepararDadosParaGravarCorrida();
 
       const resultado = await this.registrarCorrida({
-        dataHoraInicio: "",
-        dataHoraFim: "",
-        tempoTotal: "",
-        temposChegadas: [],
+        dataHoraInicio: this.corridaGravar.dataHoraInicio,
+        dataHoraFim: this.corridaGravar.dataHoraFim,
+        tempoTotal: this.corridaGravar.tempoTotal,
+        temposChegadas: this.corridaGravar.temposChegadas,
       });
 
-      console.log(resultado);
+      if (resultado.status === 201) {
+        this.resetarCorrida();
+      } else {
+        console.log(resultado);
+      }
     },
 
     prepararDadosParaGravarCorrida() {
       this.corridaGravar.dataHoraFim = this.$functions.obterDataHoraFormatada();
-      this.corridaGravar.tempoTotal = this.tempoAtual;
+      this.corridaGravar.tempoTotal = this.formatarTempo(this.tempoAtual);
 
       this.temposMarcados.forEach((tempo, index) => {
         this.corridaGravar.temposChegadas.push({
-          tempo: tempo,
+          tempo: this.formatarTempo(tempo.tempo),
           posicao: index + 1,
-          equipe: {},
+          equipe: {
+            codigo: tempo.equipe.codigo,
+            nome: tempo.equipe.nome,
+            integrantes: tempo.equipe.integrantes,
+          },
         });
       });
+    },
+
+    setarEquipesTempos(evento) {
+      const indexSelecionado = evento.itens;
+      const codigoEquipe = evento?.evento?.target?.value;
+
+      if (codigoEquipe) {
+        this.equipesSelecionadas.forEach((equipe) => {
+          if (equipe.codigo === codigoEquipe) {
+            this.temposMarcados[indexSelecionado].equipe = equipe;
+          }
+        });
+      } else {
+        this.temposMarcados[indexSelecionado].equipe = null;
+      }
+    },
+
+    definirModalSetarTemposEquipes() {
+      this.exibirModalSetarTemposEquipes = this.exibirModalSetarTemposEquipes
+        ? false
+        : true;
     },
 
     navegarPara(url) {

@@ -1,0 +1,42 @@
+.card-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  width: 10rem;
+  height: 10rem;
+  background-color: #00a2ff;
+  border-radius: 10px;
+  cursor: pointer;
+
+  .texto {
+    color: #ffffff;
+    font-size: 1.8rem;
+    text-align: center;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .card-area {
+  
+    width: 8rem;
+    height: 8rem;
+  
+    .texto {
+      font-size: 1.6rem;
+    }
+  }
+}
+
+@media (max-width: 470px) {
+  .card-area {
+  
+    width: 6.5rem;
+    height: 6.5rem;
+  
+    .texto {
+      font-size: 1.3rem;
+    }
+  }
+}
