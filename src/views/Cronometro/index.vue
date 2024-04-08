@@ -16,16 +16,16 @@
           </SelecionarEquipes>
         </span>
       </div>
-      <div v-else><span>EQUIPES NÃO FORAM ENCONTRADAS PARA SEREM SELECIONADAS!</span></div>
+      <div v-else>
+        <span>EQUIPES NÃO FORAM ENCONTRADAS PARA SEREM SELECIONADAS!</span>
+      </div>
     </div>
     <div class="d-flex justify-content-center botoes">
       <BotaoPadrao
-        class=""
         :texto="'Voltar'"
         @click="navegarPara('areaadministrativa')"
       />
       <BotaoPadrao
-        class=""
         :texto="'Ir para o cronômetro'"
         @click="exibirCronometro"
         :disabled="!equipes.length || !equipesSelecionadas.length"
@@ -33,69 +33,53 @@
     </div>
   </div>
 
-  <div class="container" v-if="cronometroVisivel">
-    <div class="item">
-      <button
-        style="width: 6rem; margin-top: 1.5rem"
-        class="botao"
-        @click="navegarPara('home')"
-      >
-        Voltar
-      </button>
-    </div>
-    <button
-      class="botao"
-      @click="registrarCarrinhos"
-      :disabled="!temposMarcados.length"
-      :class="[{ desabilitado: !temposMarcados.length }]"
-    >
-      Registrar
-    </button>
+  <div class="container-cronometro" v-if="cronometroVisivel">
+    <div class="coluna-esquerda">
+      <div class="cronometro">{{ formatarTempo(tempoAtual) }}</div>
+      <div class="botoes">
+        <BotaoPadrao :texto="'Voltar'" @click="fecharCronometro" />
+        <BotaoPadrao
+          :texto="'Resetar'"
+          @click="resetarCronometro"
+          :disabled="!cronometroIniciou"
+        />
+        <BotaoPadrao
+          :texto="'Iniciar'"
+          @click="iniciarCorrida"
+          v-if="!cronometroIniciou"
+        />
+        <BotaoPadrao
+          :texto="'Pausar'"
+          @click="pausarCronometro"
+          v-if="cronometroIniciou && !cronometroPausado"
+        />
+        <BotaoPadrao
+          :texto="'Continuar'"
+          @click="continuarCorrida"
+          v-if="cronometroIniciou && cronometroPausado"
+        />
+        <BotaoPadrao
+          :texto="'Marcar Tempo'"
+          @click="marcarTempo"
+          :disabled="!cronometroIniciou"
+        />
+      </div>
 
-    <!-- <h1 class="title">Cronômetro da Corrida</h1> -->
-    <div class="cronometro">{{ formatarTempo(tempoAtual) }}</div>
-    <div class="botoes">
-      <button
-        v-if="!cronometroRodando"
-        class="botao mr-0p5"
-        @click="iniciarCorrida"
-        :disabled="cronometroRodando"
-      >
-        Iniciar Corrida
-      </button>
-      <button
-        v-if="cronometroRodando"
-        class="botao mr-0p5"
-        @click="pararCorrida"
-        :disabled="!cronometroRodando"
-      >
-        Parar Corrida
-      </button>
-      <button
-        class="botao"
-        @click="marcarTempo"
-        :disabled="!cronometroRodando"
-        :class="[{ desabilitado: !cronometroRodando }]"
-      >
-        Marcar Tempo
-      </button>
+      <BotaoPadrao
+        class="botao-registrar"
+        :texto="'Registrar Corrida'"
+        @click="salvarCorrida"
+        :disabled="!cronometroIniciou"
+      />
     </div>
-
-    <div class="scroll-container">
-      <ul class="containerCarros">
-        <li
-          v-for="(tempo, index) in temposMarcados"
-          :key="index"
-          class="marcado carrosTabela"
-          :class="[
-            { primeiro: index + 1 == 1 },
-            { segundo: index + 1 == 2 },
-            { terceiro: index + 1 == 3 },
-          ]"
-        >
-          {{ `${index + 1}° Carro: ${formatarTempo(tempo)}` }}
-        </li>
-      </ul>
+    <div class="coluna-direita">
+      <div
+        class="linha-tempo"
+        v-for="(tempo, index) in temposMarcados"
+        :key="tempo"
+      >
+        <span>{{ `${index + 1}° ${formatarTempo(tempo)}` }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -103,6 +87,7 @@
 <script>
 import { mapActions } from "pinia";
 import { useEquipe } from "../../stores/equipe";
+import { useCorrida } from "../../stores/corrida";
 
 export default {
   name: "Cronometro",
@@ -115,33 +100,30 @@ export default {
       cronometroVisivel: false,
 
       tempoAtual: 0,
-      cronometroRodando: false,
+      tempoInicial: 0,
+      cronometroPausado: false,
+      cronometroIniciou: false,
       cronometroInterval: null,
       temposMarcados: [],
-      intervaloIdBanco: null,
 
-      itemsCarregados: [],
-      ultimoItemArraySorteado: [],
-      incrementarId: 0,
-
-      item: {
-        id: 1,
-        carrinho: {
-          iniciou: false,
-        },
+      corridaGravar: {
+        dataHoraInicio: null,
+        dataHoraFim: null,
+        tempoTotal: null,
+        temposChegadas: [],
       },
     };
   },
 
   mounted() {
     this.carregarEquipes();
-    // await this.sortCarros();
   },
 
   created() {},
 
   methods: {
     ...mapActions(useEquipe, ["listarEquipes"]),
+    ...mapActions(useCorrida, ["registrarCorrida"]),
 
     async carregarEquipes() {
       const resultado = await this.listarEquipes({ filtros: { ativas: true } });
@@ -175,22 +157,25 @@ export default {
     },
 
     fecharCronometro() {
+      this.resetarCronometro();
       this.cronometroVisivel = false;
     },
 
     iniciarCorrida() {
+      this.corridaGravar.dataHoraInicio =
+        this.$functions.obterDataHoraFormatada();
       clearInterval(this.cronometroInterval);
-      this.tempoAtual = 0;
-      this.cronometroRodando = true;
+      this.cronometroIniciou = true;
       this.cronometroInterval = setInterval(() => {
-        this.tempoAtual += 10;
+        if (!this.cronometroPausado) {
+          this.tempoAtual += 10;
+        }
       }, 10);
     },
 
-    pararCorrida() {
-      this.tempoAtual = 0;
-      this.cronometroRodando = false;
-      clearInterval(this.cronometroInterval);
+    continuarCorrida() {
+      this.tempoInicial = Date.now() - this.tempoAtual;
+      this.cronometroPausado = false;
     },
 
     marcarTempo() {
@@ -199,7 +184,8 @@ export default {
 
     resetarCronometro() {
       this.tempoAtual = 0;
-      this.cronometroRodando = false;
+      this.cronometroIniciou = false;
+      this.cronometroPausado = false;
       this.temposMarcados = [];
       clearInterval(this.cronometroInterval);
     },
@@ -215,22 +201,43 @@ export default {
       )}:${String(milissegundos).padStart(3, "0")}`;
     },
 
-    navegarPara(url) {
-      this.$router.push(`/${url}`);
+    pausarCronometro() {
+      this.cronometroPausado = true;
     },
 
-    sortCarros() {
-      const sorteio = this.itemsCarregados.sort((a, b) => a.id - b.id);
-      this.ultimoItemArraySorteado = sorteio[sorteio.length - 1];
+    async salvarCorrida() {
+      this.prepararDadosParaGravarCorrida();
 
-      this.incrementarId = this.ultimoItemArraySorteado.id + 1;
-      return;
+      const resultado = await this.registrarCorrida({
+        dataHoraInicio: "",
+        dataHoraFim: "",
+        tempoTotal: "",
+        temposChegadas: [],
+      });
+
+      console.log(resultado);
+    },
+
+    prepararDadosParaGravarCorrida() {
+      this.corridaGravar.dataHoraFim = this.$functions.obterDataHoraFormatada();
+      this.corridaGravar.tempoTotal = this.tempoAtual;
+
+      this.temposMarcados.forEach((tempo, index) => {
+        this.corridaGravar.temposChegadas.push({
+          tempo: tempo,
+          posicao: index + 1,
+          equipe: {},
+        });
+      });
+    },
+
+    navegarPara(url) {
+      this.$router.push(`/${url}`);
     },
   },
 
   beforeDestroy() {
     clearInterval(this.cronometroInterval);
-    clearInterval(this.intervaloIdBanco);
     this.resetarCronometro();
   },
 };

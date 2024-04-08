@@ -27,7 +27,9 @@ export const useAuth = defineStore("auth", () => {
         return false;
       }
       return true;
-    } catch (error) {}
+    } catch (error) {
+      return false
+    }
   }
 
   function deslogarUsuario() {

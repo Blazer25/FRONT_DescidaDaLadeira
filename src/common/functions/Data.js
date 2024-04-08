@@ -1,21 +1,15 @@
-const moment = require("moment");
+import moment from "moment";
 
-function obterDataHoraFormatada() {
+export function obterDataHoraFormatada() {
   return moment().format("YYYY-MM-DD hh:mm:ss");
 }
 
-function converterParaDataHoraFormatada(dataHoraString) {
+export function converterParaDataHoraFormatada(dataHoraString) {
   return moment(dataHoraString, "YYYY-MM-DD hh:mm:ss").format(
     "DD/MM/YYYY hh:mm:ss"
   );
 }
 
-function removerHoraDaData(dataHoraString) {
+export function removerHoraDaData(dataHoraString) {
   return moment(dataHoraString, "YYYY-MM-DD hh:mm:ss").format("YYYY-MM-DD");
 }
-
-export default {
-  obterDataHoraFormatada,
-  converterParaDataHoraFormatada,
-  removerHoraDaData,
-};

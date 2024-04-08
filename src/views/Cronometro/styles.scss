@@ -5,7 +5,6 @@
   align-items: center;
   flex-direction: column;
 
-
   .titulo {
     margin: 2rem 2rem 0 2rem;
     text-align: center;
@@ -33,145 +32,84 @@
     flex-direction: row;
     gap: 1rem;
   }
-}
 
-@media screen and (max-width: 768px) {
-  .container-equipes {
+  @media screen and (max-width: 768px) {
     .selecionar-equipes > * {
       flex-basis: calc(33.33% - 20px);
     }
-  }
 
-  .botoes {
-    flex-direction: column !important;
+    .botoes {
+      flex-direction: column !important;
+    }
   }
 }
 
-.container {
-  background-color: #00a2ff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.container-cronometro {
+  display: grid;
+  grid-template-columns: 70% 30%;
   height: 100vh;
-}
 
-.title {
-  font-size: 3rem;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.cronometro {
-  font-size: 6rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-  // font-family: "PixelifySans";
-}
-
-.botoes {
-  flex-direction: row;
-  display: flex;
-}
-
-.botao {
-  width: 90%;
-  font-size: 1.5rem;
-  padding: 10px 20px;
-  margin-bottom: 10px;
-  background-color: white;
-  color: #000000;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.botao:hover {
-  background-color: #e0e0e0;
-}
-
-.marcado {
-  font-size: 20px;
-  margin-bottom: 5px;
-  color: #555;
-}
-
-.item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.containerCarros {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  list-style: none;
-}
-
-.scroll-container {
-  max-height: 280px;
-  overflow-y: auto;
-  margin-bottom: 20px;
-}
-
-.carrosTabela {
-  width: 16%;
-  padding: 5px;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-.primeiro {
-  background-color: #0df7ff;
-}
-
-.segundo {
-  background-color: #04cac0;
-}
-
-.terceiro {
-  background-color: #06a2c9;
-}
-
-.desabilitado {
-  background-color: #383838;
-  color: #ffffff !important;
-  pointer-events: none;
-}
-
-@media (max-width: 768px) {
-  .carrosTabela {
-    width: 100%;
+  .coluna-esquerda,
+  .coluna-direita {
+    padding: 1rem;
+    height: 100%;
   }
 
-  .cronometro {
-    font-size: 4.5rem;
-  }
-
-  .botoes {
-    flex-direction: column;
+  .coluna-esquerda {
+    background-color: #f0f0f0;
     display: flex;
-  }
-}
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
-@media (max-width: 380px) {
-  .cronometro {
-    font-size: 4rem;
+    .cronometro {
+      font-size: 6rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .botoes {
+      flex-direction: row;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .botao-registrar {
+      margin-top: 3rem;
+    }
   }
 
-  .botao {
-    font-size: 1.3rem;
-  }
-}
+  .coluna-direita {
+    background-color: #e0e0e0;
+    overflow: auto;
 
-@media (max-width: 330px) {
-  .cronometro {
-    font-size: 3rem;
+    .linha-tempo {
+      font-weight: bold;
+      background-color: rgb(159, 159, 208);
+      padding: 10px;
+      border-bottom-left-radius: 10px;
+      text-align: center;
+      width: 50%;
+      margin: 10px auto;
+    }
   }
 
-  .botao {
-    font-size: 1rem;
+  @media screen and (max-width: 768px) {
+    grid-template-columns: 100%;
+    grid-template-rows: auto auto;
+
+    .coluna-esquerda,
+    .coluna-direita {
+      width: 100%;
+    }
+
+    .coluna-esquerda {
+      .botoes {
+        flex-direction: column;
+        width: 50%;
+      }
+    }
   }
 }
