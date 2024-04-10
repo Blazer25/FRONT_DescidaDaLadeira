@@ -1,42 +1,15 @@
-.card-area {
+.card {
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
 
   width: 10rem;
-  height: 10rem;
-  background-color: #00a2ff;
-  border-radius: 10px;
+  height: 15rem;
+  background: pink;
+  color: white;
   cursor: pointer;
 
-  .texto {
-    color: #ffffff;
-    font-size: 1.8rem;
-    text-align: center;
+  &:hover {
+    opacity: 0.8;
   }
 }
 
-@media (max-width: 767.98px) {
-  .card-area {
-  
-    width: 8rem;
-    height: 8rem;
-  
-    .texto {
-      font-size: 1.6rem;
-    }
-  }
-}
-
-@media (max-width: 470px) {
-  .card-area {
-  
-    width: 6.5rem;
-    height: 6.5rem;
-  
-    .texto {
-      font-size: 1.3rem;
-    }
-  }
-}

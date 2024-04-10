@@ -1,5 +1,13 @@
 <template>
   <div class="selecao-equipes" v-if="!cronometroVisivel">
+    <div class="text-center" v-if="equipes.length">
+      <span>SELECIONE O ESTÁGIO DA CORRIDA:</span>
+      <SelectPadrao
+        :opcoes="estagiosCorrida"
+        :placeholder="'Selecione o estágio'"
+        @selectOpcoes="setarEstagio"
+      />
+    </div>
     <div class="titulo" v-if="equipes.length">
       <span>SELECIONE AS EQUIPES PARA PARTICIPAREM DA CORRIDA</span>
     </div>
@@ -28,7 +36,11 @@
       <BotaoPadrao
         :texto="'Ir para o cronômetro'"
         @click="exibirCronometro"
-        :disabled="!equipes.length || !equipesSelecionadas.length"
+        :disabled="
+          !equipes.length ||
+          !equipesSelecionadas.length ||
+          !corridaGravar.estagio
+        "
       />
     </div>
   </div>
@@ -139,7 +151,30 @@ export default {
         dataHoraFim: null,
         tempoTotal: null,
         temposChegadas: [],
+        estagio: null,
       },
+      estagiosCorrida: [
+        {
+          texto: "GRUPOS",
+          valor: "GRUPOS",
+        },
+        {
+          texto: "OITAVAS",
+          valor: "OITAVAS",
+        },
+        {
+          texto: "QUARTAS",
+          valor: "QUARTAS",
+        },
+        {
+          texto: "SEMI",
+          valor: "SEMI",
+        },
+        {
+          texto: "FINAL",
+          valor: "FINAL",
+        },
+      ],
     };
   },
 
@@ -173,6 +208,14 @@ export default {
       this.exibirModalSetarTemposEquipes = false;
       this.temposMarcados = [];
       this.equipesSelecionadas = [];
+
+      this.corridaGravar = {
+        dataHoraInicio: null,
+        dataHoraFim: null,
+        tempoTotal: null,
+        temposChegadas: [],
+        estagio: null,
+      };
     },
 
     async carregarEquipes() {
@@ -272,6 +315,7 @@ export default {
         dataHoraFim: this.corridaGravar.dataHoraFim,
         tempoTotal: this.corridaGravar.tempoTotal,
         temposChegadas: this.corridaGravar.temposChegadas,
+        estagio: this.corridaGravar.estagio,
       });
 
       if (resultado.status === 201) {
@@ -317,6 +361,10 @@ export default {
       this.exibirModalSetarTemposEquipes = this.exibirModalSetarTemposEquipes
         ? false
         : true;
+    },
+
+    setarEstagio(evento) {
+      this.corridaGravar.estagio = evento?.evento?.target?.value || null;
     },
 
     navegarPara(url) {

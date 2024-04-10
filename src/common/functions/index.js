@@ -2,6 +2,7 @@ import {
   obterDataHoraFormatada,
   converterParaDataHoraFormatada,
   removerHoraDaData,
+  removerData
 } from "./Data";
 
 import tokenLocalStorage from "./Token";
@@ -11,4 +12,5 @@ export default {
   obterDataHoraFormatada,
   converterParaDataHoraFormatada,
   removerHoraDaData,
+  removerData
 };

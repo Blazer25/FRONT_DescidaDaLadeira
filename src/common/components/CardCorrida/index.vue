@@ -1,9 +1,11 @@
 <template>
-  <div class="card-area">
+  <div class="card">
+    <span>{{ indice + 1 }}° Corrida</span>
+    <span>{{ this.$functions.removerHoraDaData(corrida.dataHoraInicio) }}</span>
+    <span>De: {{ this.$functions.removerData(corrida.dataHoraInicio) }}</span>
+    <span>Até: {{ this.$functions.removerData(corrida.dataHoraInicio) }}</span>
+    <span>Total: {{ corrida.tempoTotal }}</span>
 
-    <div class="texto">
-      <span>{{ texto }}</span>
-    </div>
   </div>
 </template>
 
@@ -15,10 +17,13 @@ export default {
     return {};
   },
   props: {
-    texto: {
-      type: String,
+    corrida: {
+      type: Object,
       required: true,
-      default: "...",
+    },
+    indice: {
+      type: Number,
+      required: true,
     },
   },
   methods: {},

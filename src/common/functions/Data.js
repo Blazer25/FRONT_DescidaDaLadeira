@@ -11,5 +11,9 @@ export function converterParaDataHoraFormatada(dataHoraString) {
 }
 
 export function removerHoraDaData(dataHoraString) {
-  return moment(dataHoraString, "YYYY-MM-DD hh:mm:ss").format("YYYY-MM-DD");
+  return moment(dataHoraString, "YYYY-MM-DD hh:mm:ss").format("DD/MM/YYYY");
+}
+
+export function removerData(dataHoraString) {
+  return moment(dataHoraString, "YYYY-MM-DD hh:mm:ss").format("hh:mm:ss");
 }
