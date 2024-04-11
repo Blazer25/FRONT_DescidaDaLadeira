@@ -1,8 +1,18 @@
 .ranking-container {
-    .linha-corridas {
-        width: 100%;
-        display: flex;
-        justify-content: start;
-        gap: 1rem;
-    }
+  padding: 1.5rem;
+
+  .titulo {
+    font-size: 2rem;
+  }
+
+  .sub-titulo {
+    margin-top: 1rem;
+  }
+
+  .linha-corridas {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    gap: 1rem;
+  }
 }

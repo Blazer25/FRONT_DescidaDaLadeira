@@ -1,59 +1,80 @@
 <template>
   <div class="ranking-container">
-    <h1 class="titulo">RANKING</h1>
+    <h1 class="titulo text-center">RANKING</h1>
     <div v-if="corridasCarregadas.length">
+      <p class="sub-titulo">Fase de Grupos</p>
       <div v-if="corridas.grupo.length">
-        <p>Fase de grupo</p>
         <div class="linha-corridas">
           <div
-            v-for="corridaGrupo in corridas.grupo"
+            v-for="(corridaGrupo, indice) in corridas.grupo"
             :key="corridaGrupo.codigo"
           >
-            <CardCorrida :corrida="corridaGrupo"></CardCorrida>
+            <CardCorrida
+              :corrida="corridaGrupo"
+              :indice="indice"
+              :estagio="'grupos'"
+            ></CardCorrida>
           </div>
         </div>
       </div>
+      <div v-else>Não há registro de corridas na fase de grupo!</div>
       <div v-if="corridas.oitavas.length">
-        <p>Fase Oitavas</p>
+        <p class="sub-titulo">Oitavas de Final</p>
         <div class="linha-corridas">
           <div
             v-for="(corridaGrupo, indice) in corridas.oitavas"
             :key="corridaGrupo.codigo"
           >
-            <CardCorrida :corrida="corridaGrupo" :indice="indice"></CardCorrida>
+            <CardCorrida
+              :corrida="corridaGrupo"
+              :indice="indice"
+              :estagio="'oitavas'"
+            ></CardCorrida>
           </div>
         </div>
       </div>
       <div v-if="corridas.quartas.length">
-        <p>Fase Quartas</p>
+        <p class="sub-titulo">Quartas de Final</p>
         <div class="linha-corridas">
           <div
             v-for="(corridaGrupo, indice) in corridas.quartas"
             :key="corridaGrupo.codigo"
           >
-            <CardCorrida :corrida="corridaGrupo" :indice="indice"></CardCorrida>
+            <CardCorrida
+              :corrida="corridaGrupo"
+              :indice="indice"
+              :estagio="'quartas'"
+            ></CardCorrida>
           </div>
         </div>
       </div>
       <div v-if="corridas.semi.length">
-        <p>Fase Semi</p>
+        <p class="sub-titulo">Semi Final</p>
         <div class="linha-corridas">
           <div
             v-for="(corridaGrupo, indice) in corridas.semi"
             :key="corridaGrupo.codigo"
           >
-            <CardCorrida :corrida="corridaGrupo" :indice="indice"></CardCorrida>
+            <CardCorrida
+              :corrida="corridaGrupo"
+              :indice="indice"
+              :estagio="'semi'"
+            ></CardCorrida>
           </div>
         </div>
       </div>
       <div v-if="corridas.final.length">
-        <p>Fase Final</p>
+        <p class="sub-titulo">Final</p>
         <div class="linha-corridas">
           <div
             v-for="(corridaGrupo, indice) in corridas.final"
             :key="corridaGrupo.codigo"
           >
-            <CardCorrida :corrida="corridaGrupo" :indice="indice"></CardCorrida>
+            <CardCorrida
+              :corrida="corridaGrupo"
+              :indice="indice"
+              :estagio="'final'"
+            ></CardCorrida>
           </div>
         </div>
       </div>
