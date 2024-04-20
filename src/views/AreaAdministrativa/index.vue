@@ -6,9 +6,9 @@
       <div class="w-100">
         <div class="informacoes">
           <MiniCardPadrao
-            :caminhoLogo="'/src/assets/images/icones/ranking.svg'"
-            :texto="'Ranking'"
-            @click="redirecionar('ranking')"
+            :caminhoLogo="'/src/assets/images/icones/corridas.svg'"
+            :texto="'Corridas'"
+            @click="redirecionar('corridas')"
           />
           <MiniCardPadrao
             :caminhoLogo="'/src/assets/images/icones/clock.svg'"
@@ -69,7 +69,7 @@ export default {
         cronometro: "/cronometro",
         registrarEquipes: "/registrarequipes",
         login: "/login",
-        ranking: "/ranking",
+        corridas: "/corridas",
         listarEquipes: "/listarequipes",
       };
 

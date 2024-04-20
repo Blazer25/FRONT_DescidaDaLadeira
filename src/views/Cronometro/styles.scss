@@ -17,7 +17,7 @@ $tamanhoFonteCronometro: 6rem;
   }
 
   .container-equipes {
-    padding: 3rem;
+    padding: 1.5rem;
 
     .selecionar-equipes {
       display: flex;
@@ -29,7 +29,7 @@ $tamanhoFonteCronometro: 6rem;
     .selecionar-equipes > * {
       flex-basis: calc(20% - 20px);
       margin-bottom: 10px;
-      padding: 20px;
+      padding: 5px;
       text-align: center;
     }
   }

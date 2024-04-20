@@ -1,6 +1,5 @@
 <template>
   <div class="selecao-equipe" :class="[{ selecionada }]" @click="selecionarEquipe">
-    <img :src="equipe.img" />
     <div>
       <span>{{ equipe.nome }}</span>
     </div>
@@ -20,10 +19,9 @@ export default {
   props: {
     equipe: {
       type: Object,
-      required: false,
+      required: true,
       default: {
-        nome: "teste",
-        img: "https://img.freepik.com/psd-gratuitas/carro-em-miniatura-sedan_53876-84522.jpg",
+        nome: "Teste - Corrida",
       },
     },
   },

@@ -1,9 +1,11 @@
 <template>
-  <div class="ranking-container">
-    <h1 class="titulo text-center">RANKING</h1>
+  <div class="corridas-container">
+    <div class="d-flex justify-content-center">
+      <h1 class="titulo">CORRIDAS</h1>
+    </div>
     <div v-if="corridasCarregadas.length">
       <p class="sub-titulo">Fase de Grupos</p>
-      <div v-if="corridas.grupo.length">
+      <div v-if="corridas.grupo.length" class="overflow-auto">
         <div class="linha-corridas">
           <div
             v-for="(corridaGrupo, indice) in corridas.grupo"
@@ -18,7 +20,7 @@
         </div>
       </div>
       <div v-else>Não há registro de corridas na fase de grupo!</div>
-      <div v-if="corridas.oitavas.length">
+      <div v-if="corridas.oitavas.length" class="overflow-auto">
         <p class="sub-titulo">Oitavas de Final</p>
         <div class="linha-corridas">
           <div
@@ -33,7 +35,7 @@
           </div>
         </div>
       </div>
-      <div v-if="corridas.quartas.length">
+      <div v-if="corridas.quartas.length" class="overflow-auto">
         <p class="sub-titulo">Quartas de Final</p>
         <div class="linha-corridas">
           <div
@@ -48,8 +50,8 @@
           </div>
         </div>
       </div>
-      <div v-if="corridas.semi.length">
-        <p class="sub-titulo">Semi Final</p>
+      <div v-if="corridas.semi.length" class="overflow-auto">
+        <p class="sub-titulo">Semifinal</p>
         <div class="linha-corridas">
           <div
             v-for="(corridaGrupo, indice) in corridas.semi"
@@ -63,7 +65,7 @@
           </div>
         </div>
       </div>
-      <div v-if="corridas.final.length">
+      <div v-if="corridas.final.length" class="overflow-auto">
         <p class="sub-titulo">Final</p>
         <div class="linha-corridas">
           <div
@@ -87,7 +89,7 @@ import { useCorrida } from "../../stores/corrida";
 import { mapActions } from "pinia";
 
 export default {
-  name: "Ranking",
+  name: "Corridas",
 
   data() {
     return {

@@ -9,8 +9,8 @@
             alt="Botão de fechar modal"
           />
         </div>
-        <div class="overflow-auto">
-        <slot />
+        <div class="modal-slot">
+          <slot />
         </div>
       </div>
     </div>

@@ -10,6 +10,11 @@
         @click="redirecionar('registrarEquipes')"
       />
       <MiniCardPadrao
+        :caminhoLogo="'/src/assets/images/icones/regulamento.svg'"
+        :texto="'Regulamento'"
+        @click="redirecionar('regulamento')"
+      />
+      <MiniCardPadrao
         v-if="!usuarioLogado"
         :caminhoLogo="'/src/assets/images/icones/login.svg'"
         :texto="'Login'"
@@ -55,7 +60,8 @@ export default {
       const rotas = {
         registrarEquipes: "/registrarEquipes",
         login: "/login",
-        areaadministrativa: "/areaadministrativa"
+        areaadministrativa: "/areaadministrativa",
+        regulamento: '/regulamento'
       };
 
       const rotaDestino = rotas[pagina];

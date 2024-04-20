@@ -10,10 +10,12 @@
     </div>
     <div class="titulo" v-if="equipes.length">
       <span>SELECIONE AS EQUIPES PARA PARTICIPAREM DA CORRIDA</span>
+      <br>
+      <span>EQUIPES SELECIONADAS: {{ equipesSelecionadas.length }}</span>
     </div>
     <div class="container-equipes">
       <div class="selecionar-equipes" v-if="equipes.length">
-        <span v-for="(equipe, index) in equipes" :key="index">
+        <div v-for="(equipe, index) in equipes" :key="index">
           <SelecionarEquipes
             @click="selecionarEquipe(index)"
             :equipe="{
@@ -22,7 +24,7 @@
             }"
           >
           </SelecionarEquipes>
-        </span>
+        </div>
       </div>
       <div v-else>
         <span>EQUIPES NÃO FORAM ENCONTRADAS PARA SEREM SELECIONADAS!</span>
@@ -320,8 +322,6 @@ export default {
 
       if (resultado.status === 201) {
         this.resetarCorrida();
-      } else {
-        console.log(resultado);
       }
     },
 

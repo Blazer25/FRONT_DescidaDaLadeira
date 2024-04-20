@@ -21,8 +21,6 @@
   text-align: center;
   max-width: 70vw; 
   width: auto; 
-  overflow-y: auto;
-  overflow-x: auto;
   max-height: 75vh;
 }
 
@@ -45,4 +43,9 @@
 .modal-fade-enter-active,
 .modal-fade-leave-active {
   transition: opacity 0.5s ease;
+}
+
+.modal-slot {
+  overflow-y:auto;
+  min-width: 30rem;
 }

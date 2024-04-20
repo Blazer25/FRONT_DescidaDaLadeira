@@ -1,6 +1,6 @@
 <template>
   <div class="card" :class="retornarFundo">
-    <span class="numero-corrida">{{ indice + 1 }}° Corrida</span>
+    <span class="numero-corrida">{{ indice + 1 }}&ordf; Corrida</span>
     <span>{{ this.$functions.removerHoraDaData(corrida.dataHoraInicio) }}</span>
     <!-- <span>De: {{ this.$functions.removerData(corrida.dataHoraInicio) }}</span>
     <span>Até: {{ this.$functions.removerData(corrida.dataHoraInicio) }}</span> -->
@@ -12,10 +12,45 @@
       </div>
     </div>
 
-    <div class="detalhes">
+    <div class="detalhes" @click="exibirModalDetalhesCorrida = true">
       <span class="detalhes-texto">Detalhes</span>
     </div>
   </div>
+
+  <ModalPadrao
+    v-if="exibirModalDetalhesCorrida"
+    @fechar-modal="exibirModalDetalhesCorrida = false"
+  >
+    <div>
+      <p class="titulo-fase">{{ retornarNomeFase }}</p>
+      <p class="titulo-numerico-corrida">{{ indice + 1 }}&ordf; Corrida</p>
+      <p class="texto-comum-corrida">
+        <span class="texto-negrito">Data:</span
+        >{{ this.$functions.removerHoraDaData(corrida.dataHoraInicio) }}
+      </p>
+      <p class="texto-comum-corrida">
+        <span class="texto-negrito">Tempo total:</span> {{ corrida.tempoTotal }}
+      </p>
+
+      <p class="titulo-equipes">Equipes:</p>
+
+      <div
+        v-for="(tempos, index) in corrida.temposChegadas"
+        :key="index"
+        class="texto-comum-corrida"
+      >
+        <hr v-if="index" />
+        <p>
+          <span class="texto-negrito">Equipe:</span> {{ tempos.equipe.nome }}
+        </p>
+        <p>
+          <span class="texto-negrito">Posição:</span> {{ tempos.posicao }}°
+          lugar
+        </p>
+        <p><span class="texto-negrito">Tempo:</span> {{ tempos.tempo }}</p>
+      </div>
+    </div>
+  </ModalPadrao>
 </template>
 
 <script>
@@ -23,7 +58,9 @@ export default {
   name: "CardCorrida",
 
   data() {
-    return {};
+    return {
+      exibirModalDetalhesCorrida: false,
+    };
   },
   props: {
     corrida: {
@@ -48,6 +85,14 @@ export default {
       if (this.estagio === "final") return "fundo-final";
 
       return "fundo-padrao";
+    },
+
+    retornarNomeFase() {
+      if (this.estagio === "grupos") return "Fase de Grupos";
+      if (this.estagio === "oitavas") return "Oitavas de Final";
+      if (this.estagio === "quartas") return "Quartas de Final";
+      if (this.estagio === "semi") return "Semifinal";
+      if (this.estagio === "final") return "Final";
     },
 
     topTresEquipes() {
