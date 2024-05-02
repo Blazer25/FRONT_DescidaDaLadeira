@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  height: 100svh;
+
+  div:empty {
+    display: none;
+  }
+
+  .ranking {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2rem;
+
+    .ranking-card {
+      background-color: #00a2ff;
+      padding: 0.5rem;
+      height: fit-content;
+      border-radius: 10px;
+
+      .titulo-fase {
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 600;
+      }
+
+      .info-tempo {
+        margin: 8px;
+        display: flex;
+        justify-content: space-between;
+
+        .span-img {
+          width: 1.4rem;
+          margin-right: 5px;
+          text-align: center;
+        }
+
+        .span-nome {
+          margin-right: 5px;
+        }
+
+        .span-tempo {
+          margin-left: 5px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 767.98px) {
+  .container {
+    flex-direction: column;
+
+    .ranking {
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+  }
+}

@@ -2,25 +2,34 @@
   display: flex;
   height: 100svh;
 
+  .centralizador {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .informacoes {
-    width: 60%;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-
+    gap: 2rem;
   }
 }
 
 @media (max-width: 767.98px) {
   .container {
-    display: flex;
     flex-direction: column;
-    height: 100svh;
-
-    .informacoes {
-      width: 100%;
+    
+    .centralizador {
       height: 100svh;
+    }
+    
+    .informacoes {
+      gap: 0.5rem;
+      width: 100%;
+      flex-wrap: wrap;
     }
   }
 }

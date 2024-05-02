@@ -29,6 +29,11 @@
             @click="redirecionar('listarEquipes')"
           />
           <MiniCardPadrao
+            :caminhoLogo="'/src/assets/images/icones/ranking.svg'"
+            :texto="'Ranking'"
+            @click="redirecionar('ranking')"
+          />
+          <MiniCardPadrao
             v-if="!usuarioLogado"
             :caminhoLogo="'/src/assets/images/icones/login.svg'"
             :texto="'Login'"
@@ -71,6 +76,7 @@ export default {
         login: "/login",
         corridas: "/corridas",
         listarEquipes: "/listarequipes",
+        ranking: "/ranking",
       };
 
       const rotaDestino = rotas[pagina];

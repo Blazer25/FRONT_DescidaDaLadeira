@@ -4,78 +4,79 @@
       <h1 class="titulo">CORRIDAS</h1>
     </div>
     <div v-if="corridasCarregadas.length">
-      <p class="sub-titulo">Fase de Grupos</p>
-      <div v-if="corridas.grupo.length" class="overflow-auto">
+      <p class="sub-titulo">1ª Fase</p>
+      <div v-if="corridas.fase1.length" class="overflow-auto">
         <div class="linha-corridas">
           <div
-            v-for="(corridaGrupo, indice) in corridas.grupo"
-            :key="corridaGrupo.codigo"
+            v-for="(corridaFase, indice) in corridas.fase1"
+            :key="corridaFase.codigo"
           >
             <CardCorrida
-              :corrida="corridaGrupo"
+              :corrida="corridaFase"
               :indice="indice"
-              :estagio="'grupos'"
+              :estagio="'fase1'"
             ></CardCorrida>
           </div>
         </div>
       </div>
-      <div v-else>Não há registro de corridas na fase de grupo!</div>
-      <div v-if="corridas.oitavas.length" class="overflow-auto">
-        <p class="sub-titulo">Oitavas de Final</p>
+      <div v-else>Não há registro de corridas na 1ª fase!</div>
+      <div v-if="corridas.fase2.length" class="overflow-auto">
+        <p class="sub-titulo">2ª Fase</p>
         <div class="linha-corridas">
           <div
-            v-for="(corridaGrupo, indice) in corridas.oitavas"
-            :key="corridaGrupo.codigo"
+            v-for="(corridaFase, indice) in corridas.fase2"
+            :key="corridaFase.codigo"
           >
             <CardCorrida
-              :corrida="corridaGrupo"
+              :corrida="corridaFase"
               :indice="indice"
-              :estagio="'oitavas'"
+              :estagio="'fase2'"
             ></CardCorrida>
           </div>
         </div>
       </div>
-      <div v-if="corridas.quartas.length" class="overflow-auto">
-        <p class="sub-titulo">Quartas de Final</p>
+      <div v-if="corridas.fase3.length" class="overflow-auto">
+        <p class="sub-titulo">3ª Fase</p>
         <div class="linha-corridas">
           <div
-            v-for="(corridaGrupo, indice) in corridas.quartas"
-            :key="corridaGrupo.codigo"
+            v-for="(corridaFase, indice) in corridas.fase3"
+            :key="corridaFase.codigo"
           >
             <CardCorrida
-              :corrida="corridaGrupo"
+              :corrida="corridaFase"
               :indice="indice"
-              :estagio="'quartas'"
+              :estagio="'fase3'"
             ></CardCorrida>
           </div>
         </div>
       </div>
-      <div v-if="corridas.semi.length" class="overflow-auto">
-        <p class="sub-titulo">Semifinal</p>
+      <div v-if="corridas.fase4.length" class="overflow-auto">
+        <p class="sub-titulo">4ª Fase</p>
         <div class="linha-corridas">
           <div
-            v-for="(corridaGrupo, indice) in corridas.semi"
-            :key="corridaGrupo.codigo"
+            v-for="(corridaFase, indice) in corridas.fase4"
+            :key="corridaFase.codigo"
           >
             <CardCorrida
-              :corrida="corridaGrupo"
+              :corrida="corridaFase"
               :indice="indice"
-              :estagio="'semi'"
+              :estagio="'fase4'"
             ></CardCorrida>
           </div>
         </div>
       </div>
-      <div v-if="corridas.final.length" class="overflow-auto">
+
+      <div v-if="corridas.fase5.length" class="overflow-auto">
         <p class="sub-titulo">Final</p>
         <div class="linha-corridas">
           <div
-            v-for="(corridaGrupo, indice) in corridas.final"
-            :key="corridaGrupo.codigo"
+            v-for="(corridaFase, indice) in corridas.fase5"
+            :key="corridaFase.codigo"
           >
             <CardCorrida
-              :corrida="corridaGrupo"
+              :corrida="corridaFase"
               :indice="indice"
-              :estagio="'final'"
+              :estagio="'fase5'"
             ></CardCorrida>
           </div>
         </div>
@@ -94,11 +95,11 @@ export default {
   data() {
     return {
       corridas: {
-        grupo: [],
-        oitavas: [],
-        quartas: [],
-        semi: [],
-        final: [],
+        fase1: [],
+        fase2: [],
+        fase3: [],
+        fase4: [],
+        fase5: [],
       },
 
       corridasCarregadas: [],
@@ -123,11 +124,11 @@ export default {
 
     separarCorridasPorEstagios() {
       this.corridasCarregadas.forEach((corrida) => {
-        if (corrida.estagio === "GRUPOS") this.corridas.grupo.push(corrida);
-        if (corrida.estagio === "OITAVAS") this.corridas.oitavas.push(corrida);
-        if (corrida.estagio === "QUARTAS") this.corridas.quartas.push(corrida);
-        if (corrida.estagio === "SEMI") this.corridas.semi.push(corrida);
-        if (corrida.estagio === "FINAL") this.corridas.final.push(corrida);
+        if (corrida.estagio === "fase1") this.corridas.fase1.push(corrida);
+        if (corrida.estagio === "fase2") this.corridas.fase2.push(corrida);
+        if (corrida.estagio === "fase3") this.corridas.fase3.push(corrida);
+        if (corrida.estagio === "fase4") this.corridas.fase4.push(corrida);
+        if (corrida.estagio === "fase5") this.corridas.fase5.push(corrida);
       });
     },
   },

@@ -1,7 +1,7 @@
 import { useAuth } from "../stores/auth";
 
 export default async function routes(to, from, next) {
-  const rotasNaoVerificar = ["Home_", "Home", "RegistrarEquipes", "Login"];
+  const rotasNaoVerificar = ["Home_", "Home", "Login", "Ranking"];
   if (
     rotasNaoVerificar.includes(to.name)
   ) {

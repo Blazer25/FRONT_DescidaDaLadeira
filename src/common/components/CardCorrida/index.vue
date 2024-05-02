@@ -78,21 +78,21 @@ export default {
   },
   computed: {
     retornarFundo() {
-      if (this.estagio === "grupos") return "fundo-grupo";
-      if (this.estagio === "oitavas") return "fundo-oitavas";
-      if (this.estagio === "quartas") return "fundo-quartas";
-      if (this.estagio === "semi") return "fundo-semi";
-      if (this.estagio === "final") return "fundo-final";
+      if (this.estagio === "fase1") return "fundo-fase1";
+      if (this.estagio === "fase2") return "fundo-fase2";
+      if (this.estagio === "fase3") return "fundo-fase3";
+      if (this.estagio === "fase4") return "fundo-fase4";
+      if (this.estagio === "fase5") return "fundo-final";
 
       return "fundo-padrao";
     },
 
     retornarNomeFase() {
-      if (this.estagio === "grupos") return "Fase de Grupos";
-      if (this.estagio === "oitavas") return "Oitavas de Final";
-      if (this.estagio === "quartas") return "Quartas de Final";
-      if (this.estagio === "semi") return "Semifinal";
-      if (this.estagio === "final") return "Final";
+      if (this.estagio === "fase1") return "1ª Fase";
+      if (this.estagio === "fase2") return "2ª Fase";
+      if (this.estagio === "fase3") return "3ª Fase";
+      if (this.estagio === "fase4") return "4ª Fase";
+      if (this.estagio === "fase5") return "Final";
     },
 
     topTresEquipes() {

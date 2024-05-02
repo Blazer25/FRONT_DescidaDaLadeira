@@ -8,6 +8,7 @@ import Cronometro from "../views/Cronometro/index.vue";
 import Corridas from "../views/Corridas/index.vue";
 import AreaAdministrativa from "../views/AreaAdministrativa/index.vue";
 import Regulamento from "../views/Regulamento/index.vue";
+import Ranking from "../views/Ranking/index.vue";
 
 import verificadorRotas from "./routes";
 
@@ -33,7 +34,7 @@ const routes = [
     name: "RegistrarEquipes",
     component: RegistrarEquipes,
     meta: {
-      auth: false,
+      auth: true,
     },
   },
   {
@@ -84,6 +85,15 @@ const routes = [
     component: AreaAdministrativa,
     meta: {
       auth: true,
+    },
+  },
+
+  {
+    path: "/ranking",
+    name: "Ranking",
+    component: Ranking,
+    meta: {
+      auth: false,
     },
   },
 

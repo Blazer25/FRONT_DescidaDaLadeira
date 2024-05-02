@@ -12,7 +12,6 @@
             <label>Quantidade de integrantes</label>
             <select v-model="formEquipe.quantidadeIntegrantes">
               <option value="" selected>Selecione:</option>
-              <option value="1">1 integrante</option>
               <option value="2">2 integrantes</option>
               <option value="3">3 integrantes</option>
               <option value="4">4 integrantes</option>

@@ -10,7 +10,7 @@
     </div>
     <div class="titulo" v-if="equipes.length">
       <span>SELECIONE AS EQUIPES PARA PARTICIPAREM DA CORRIDA</span>
-      <br>
+      <br />
       <span>EQUIPES SELECIONADAS: {{ equipesSelecionadas.length }}</span>
     </div>
     <div class="container-equipes">
@@ -51,7 +51,7 @@
     <div class="coluna-esquerda">
       <div class="cronometro">{{ formatarTempo(tempoAtual) }}</div>
       <div class="botoes">
-        <BotaoPadrao :texto="'Voltar'" @click="fecharCronometro" />
+        <BotaoPadrao :texto="'Voltar'" @click="resetarCorrida" />
         <BotaoPadrao
           :texto="'Resetar'"
           @click="resetarCorrida"
@@ -157,24 +157,24 @@ export default {
       },
       estagiosCorrida: [
         {
-          texto: "GRUPOS",
-          valor: "GRUPOS",
+          texto: "1ª Fase",
+          valor: "fase1",
         },
         {
-          texto: "OITAVAS",
-          valor: "OITAVAS",
+          texto: "2ª Fase",
+          valor: "fase2",
         },
         {
-          texto: "QUARTAS",
-          valor: "QUARTAS",
+          texto: "3ª Fase",
+          valor: "fase3",
         },
         {
-          texto: "SEMI",
-          valor: "SEMI",
+          texto: "4ª Fase",
+          valor: "fase4",
         },
         {
-          texto: "FINAL",
-          valor: "FINAL",
+          texto: "Final",
+          valor: "fase5",
         },
       ],
     };
