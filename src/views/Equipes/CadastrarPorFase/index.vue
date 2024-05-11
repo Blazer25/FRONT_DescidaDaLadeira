@@ -42,7 +42,7 @@ import { mapActions } from "pinia";
 import { useEquipe } from "../../../stores/equipe";
 
 export default {
-  name: "RegistrarEquipes",
+  name: "CadastrarEquipesPorFase",
 
   data() {
     return {
@@ -70,10 +70,14 @@ export default {
       ],
       filtroNome: "",
       faseSelecionada: "",
+      mensagemErro: "",
+      equipes: []
     };
   },
 
-  computed: {},
+  mounted() {
+    this.carregarEquipes();
+  },
 
   methods: {
     ...mapActions(useEquipe, [
@@ -81,6 +85,17 @@ export default {
       "listarEquipes",
       "registrarEquipePorFase",
     ]),
+
+    async carregarEquipes() {
+      const resultado = await this.listarEquipes({ filtros: { ativas: true } });
+      if (resultado.status === 200) {
+        this.equipes = resultado.data.equipes;
+      } else {
+        this.mensagemErro =
+          resultado?.response?.data?.mensagem ||
+          "Erro inesperado, tente listar as equipes em outro momento, ou verifique sua conexão com a rede!";
+      }
+    },
 
     atualizarFiltroNome(nome) {
       this.filtroNome = nome;
