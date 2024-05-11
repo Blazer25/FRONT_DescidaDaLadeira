@@ -1,8 +1,28 @@
 .container {
   display: flex;
   height: 100svh;
+  justify-content: center;
+  padding: 1.5rem;
 
   .selecao {
-    width: 50%;
+    text-align: center;
+
+    .icone-pesquisar {
+      max-width: 2rem;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .equipes {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
   }
+}
+
+.botao-cadastrar {
+  display: flex;
+  justify-content: center;
 }

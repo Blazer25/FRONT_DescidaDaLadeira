@@ -2,7 +2,7 @@
   <div class="container">
     <!-- <MenuLateralLogo /> -->
 
-    <div class="selecao">
+    <div class="selecao mt-2">
       <p>
         Selecione a fase que gostaria de registrar as equipes participantes:
       </p>
@@ -15,25 +15,45 @@
 
       <div v-if="faseSelecionada">
         <p>Pesquisar equipe pelo nome:</p>
-        <InputPadrao
-          class="mb-1"
-          :value="filtroNome"
-          :descricao="'Digite aqui o nome da equipe:'"
-          @input:padrao="atualizarFiltroNome"
-        />
+        <div class="d-flex">
+          <InputPadrao
+            class="mb-1"
+            :value="filtroNome"
+            :placeholder="'Digite aqui o nome da equipe:'"
+            @input:padrao="atualizarFiltroNome"
+          />
+          <img
+            src="../../../assets/images/icones/lupa.svg"
+            alt="ícone pesquisar"
+            class="icone-pesquisar"
+            @click="carregarEquipes()"
+          />
+        </div>
       </div>
-
-      </div>
-
-    <!-- <div v-for="(equipe, index) in equipes" :key="index">
+      <div class="equipes" v-if="faseSelecionada && equipes.length">
+        <div v-for="(equipe, index) in equipes" :key="index">
           <SelecionarEquipes
             @click="selecionarEquipe(index)"
             :equipe="{
               nome: equipe.nome,
             }"
+            :bloquear="
+              bloquearEquipes &&
+              equipe.codigo &&
+              equipesSelecionadas[index] &&
+              equipesSelecionadas[index] !== equipesSelecionadas[index].codigo
+            "
           >
           </SelecionarEquipes>
-        </div> -->
+        </div>
+      </div>
+      <div v-if="faseSelecionada && !equipes.length">
+        <p>Não foram encontradas equipes para serem selecionadas!</p>
+      </div>
+    </div>
+  </div>
+  <div class="botao-cadastrar" v-if="faseSelecionada && equipes.length">
+    <button>Cadastrar</button>
   </div>
 </template>
 
@@ -71,7 +91,9 @@ export default {
       filtroNome: "",
       faseSelecionada: "",
       mensagemErro: "",
-      equipes: []
+      equipes: [],
+      equipesSelecionadas: [],
+      bloquearEquipes: false,
     };
   },
 
@@ -87,10 +109,13 @@ export default {
     ]),
 
     async carregarEquipes() {
-      const resultado = await this.listarEquipes({ filtros: { ativas: true } });
+      const resultado = await this.listarEquipes({
+        filtros: { ativas: true, nome: this.filtroNome },
+      });
       if (resultado.status === 200) {
         this.equipes = resultado.data.equipes;
       } else {
+        this.equipes = [];
         this.mensagemErro =
           resultado?.response?.data?.mensagem ||
           "Erro inesperado, tente listar as equipes em outro momento, ou verifique sua conexão com a rede!";
@@ -103,6 +128,40 @@ export default {
 
     setarEstagio(evento) {
       this.faseSelecionada = evento?.evento?.target?.value || "";
+      this.filtroNome = "";
+    },
+
+    selecionarEquipe(index) {
+      this.verificarBloquearSelecao();
+      if (this.bloquearEquipes) return;
+
+      const equipeEncontrada = this.equipes[index];
+      console.log(index);
+      console.log(equipeEncontrada);
+
+      const equipeJaSelecionada = this.equipesSelecionadas.find(
+        (equipe) => equipe.codigo === equipeEncontrada.codigo
+      );
+
+      if (equipeJaSelecionada) {
+        this.equipesSelecionadas = this.equipesSelecionadas.filter(
+          (equipe) => equipe.codigo !== equipeEncontrada.codigo
+        );
+        return;
+      }
+      this.equipesSelecionadas.push(equipeEncontrada);
+    },
+
+    verificarBloquearSelecao() {
+      console.log("@@@@@@@@", this.equipesSelecionadas);
+      console.log("@@@@@@@@", this.equipesSelecionadas.length);
+      if (this.equipesSelecionadas.length >= 2) {
+        this.bloquearEquipes = true;
+        console.log(this.bloquearEquipes);
+        return;
+      }
+
+      this.bloquearEquipes = false;
     },
   },
 

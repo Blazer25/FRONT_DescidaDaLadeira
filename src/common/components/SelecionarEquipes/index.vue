@@ -1,5 +1,9 @@
 <template>
-  <div class="selecao-equipe" :class="[{ selecionada }]" @click="selecionarEquipe">
+  <div
+    class="selecao-equipe"
+    :class="[{ selecionada }, { bloquear }]"
+    @click="selecionarEquipe"
+  >
     <div>
       <span>{{ equipe.nome }}</span>
     </div>
@@ -24,6 +28,11 @@ export default {
         nome: "Teste - Corrida",
       },
     },
+    bloquear: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
   },
 
   methods: {
@@ -41,4 +50,3 @@ export default {
 </script>
 
 <style lang="scss" scoped src="./styles.scss" />
-

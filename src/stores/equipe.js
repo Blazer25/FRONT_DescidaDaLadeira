@@ -36,7 +36,10 @@ export const useEquipe = defineStore("equipe", () => {
 
   async function listarEquipes({ filtros }) {
     try {
-      return await http.get(`/equipes?ativas=${filtros?.ativas || ""}`, null);
+      return await http.get(
+        `/equipes?ativas=${filtros?.ativas || ""}&nome=${filtros?.nome || ""}`,
+        null
+      );
     } catch (error) {
       return error;
     }

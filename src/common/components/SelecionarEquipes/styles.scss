@@ -19,6 +19,12 @@
     opacity: 0.5;
   }
   &.selecionada {
-    background-color: rgba(30, 127, 255, 0.624);
+    background-color: #1e7fff9f;
+  }
+
+  &.bloquear {
+    background-color: #6d6d6d;
+    // pointer-events: none;
+    cursor: not-allowed;
   }
 }

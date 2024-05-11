@@ -50,7 +50,7 @@
         <div class="informacoes">
           <MiniCardPadrao
             :caminhoLogo="'/src/assets/images/icones/corridas.svg'"
-            :texto="'Cadastrar corridas por fase'"
+            :texto="'Corridas por fase'"
             @click="redirecionar('cadastrarCorridasPorFase')"
           />
         </div>
