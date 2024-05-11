@@ -4,6 +4,7 @@ import http from "../common/services/https";
 export const useEquipe = defineStore("equipe", () => {
   const state = {
     equipeSelecionada: null,
+    equipesPorFaseSelecionada: null,
   };
 
   async function registrarEquipe({ nome, quantidadeIntegrantes, integrantes }) {
@@ -20,9 +21,33 @@ export const useEquipe = defineStore("equipe", () => {
     }
   }
 
-  async function listarEquipes({filtros}) {
+  async function registrarEquipePorFase({ equipes, fase }) {
     try {
-      return await http.get(`/equipes?ativas=${filtros?.ativas || ''}`, null);
+      const dados = {
+        equipes,
+        fase,
+      };
+
+      return await http.post("/equipes/porFase", dados);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async function listarEquipes({ filtros }) {
+    try {
+      return await http.get(`/equipes?ativas=${filtros?.ativas || ""}`, null);
+    } catch (error) {
+      return error;
+    }
+  }
+
+  async function listarEquipesPorFase({ filtros }) {
+    try {
+      return await http.get(
+        `/equipes/porFase?fase=${filtros?.fase || ""}`,
+        null
+      );
     } catch (error) {
       return error;
     }
@@ -54,22 +79,35 @@ export const useEquipe = defineStore("equipe", () => {
     localStorage.setItem("equipeSelecionada", JSON.stringify(equipe));
   }
 
+  function setEquipePorFaseSelecionada(equipesPorFase) {
+    state.equipesPorFaseSelecionada = equipesPorFase;
+    localStorage.setItem(
+      "equipesPorFaseSelecionada",
+      JSON.stringify(equipesPorFase)
+    );
+  }
+
   function retornarState() {
     return state;
   }
 
   function resetarState() {
     state.equipeSelecionada = null;
+    state.equipesPorFaseSelecionada = null;
     localStorage.removeItem("equipeSelecionada");
+    localStorage.removeItem("equipesPorFaseSelecionada");
   }
 
   return {
     registrarEquipe,
+    registrarEquipePorFase,
     listarEquipes,
+    listarEquipesPorFase,
     alterarEquipe,
     inativarAtivarEquipe,
-    
+
     setEquipeSelecionada,
+    setEquipePorFaseSelecionada,
     resetarState,
     retornarState,
   };

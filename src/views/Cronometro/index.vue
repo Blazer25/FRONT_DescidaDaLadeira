@@ -20,7 +20,6 @@
             @click="selecionarEquipe(index)"
             :equipe="{
               nome: equipe.nome,
-              img: 'https://img.freepik.com/psd-gratuitas/carro-em-miniatura-sedan_53876-84522.jpg',
             }"
           >
           </SelecionarEquipes>

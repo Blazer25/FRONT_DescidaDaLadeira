@@ -46,6 +46,14 @@
             @click="deslogarUsuario"
           />
         </div>
+        <br />
+        <div class="informacoes">
+          <MiniCardPadrao
+            :caminhoLogo="'/src/assets/images/icones/corridas.svg'"
+            :texto="'Cadastrar corridas por fase'"
+            @click="redirecionar('cadastrarCorridasPorFase')"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -77,6 +85,7 @@ export default {
         corridas: "/corridas",
         listarEquipes: "/listarequipes",
         ranking: "/ranking",
+        cadastrarCorridasPorFase: "/cadastrarCorridasPorFase",
       };
 
       const rotaDestino = rotas[pagina];

@@ -9,6 +9,7 @@ import Corridas from "../views/Corridas/index.vue";
 import AreaAdministrativa from "../views/AreaAdministrativa/index.vue";
 import Regulamento from "../views/Regulamento/index.vue";
 import Ranking from "../views/Ranking/index.vue";
+import CadastrarEquipesPorFase from '../views/Equipes/CadastrarPorFase/index.vue'
 
 import verificadorRotas from "./routes";
 
@@ -35,6 +36,14 @@ const routes = [
     component: RegistrarEquipes,
     meta: {
       auth: true,
+    },
+  },
+  {
+    path: "/cadastrarCorridasPorFase",
+    name: "CadastrarEquipesPorFase",
+    component: CadastrarEquipesPorFase,
+    meta: {
+      auth: false,
     },
   },
   {
