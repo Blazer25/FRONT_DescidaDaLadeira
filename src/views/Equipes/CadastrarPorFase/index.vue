@@ -2,7 +2,7 @@
   <div class="container">
     <!-- <MenuLateralLogo /> -->
 
-    <div class="selecao mt-2">
+    <div class="selecao mt-1">
       <p>
         Selecione a fase que gostaria de registrar as equipes participantes:
       </p>
@@ -33,16 +33,11 @@
       <div class="equipes" v-if="faseSelecionada && equipes.length">
         <div v-for="(equipe, index) in equipes" :key="index">
           <SelecionarEquipes
+            :key="index + contadorAttEquipe"
             @click="selecionarEquipe(index)"
             :equipe="{
               nome: equipe.nome,
             }"
-            :bloquear="
-              bloquearEquipes &&
-              equipe.codigo &&
-              equipesSelecionadas[index] &&
-              equipesSelecionadas[index] !== equipesSelecionadas[index].codigo
-            "
           >
           </SelecionarEquipes>
         </div>
@@ -50,10 +45,17 @@
       <div v-if="faseSelecionada && !equipes.length">
         <p>Não foram encontradas equipes para serem selecionadas!</p>
       </div>
+      <div class="botao-cadastrar" v-if="faseSelecionada && equipes.length">
+        <p v-if="equipesSelecionadas.length > 3">
+          Permitido cadastrar até 3 equipes por corrida!
+        </p>
+        <BotaoPadrao
+          @click="cadastrarEquipes"
+          :texto="'Cadastrar'"
+          :disabled="equipesSelecionadas.length > 3"
+        />
+      </div>
     </div>
-  </div>
-  <div class="botao-cadastrar" v-if="faseSelecionada && equipes.length">
-    <button>Cadastrar</button>
   </div>
 </template>
 
@@ -90,10 +92,10 @@ export default {
       ],
       filtroNome: "",
       faseSelecionada: "",
-      mensagemErro: "",
       equipes: [],
       equipesSelecionadas: [],
-      bloquearEquipes: false,
+      bloquearBotaoCadastrar: false,
+      contadorAttEquipe: 0,
     };
   },
 
@@ -116,9 +118,15 @@ export default {
         this.equipes = resultado.data.equipes;
       } else {
         this.equipes = [];
-        this.mensagemErro =
-          resultado?.response?.data?.mensagem ||
-          "Erro inesperado, tente listar as equipes em outro momento, ou verifique sua conexão com a rede!";
+        await this.$swal.fire({
+          title: "Erro",
+          text:
+            res.response?.data?.mensagem ||
+            "Erro inesperado, tente listar as equipes em outro momento, ou verifique sua conexão com a rede!",
+          icon: "error",
+          showCloseButton: true,
+          showConfirmationButton: true,
+        });
       }
     },
 
@@ -133,11 +141,8 @@ export default {
 
     selecionarEquipe(index) {
       this.verificarBloquearSelecao();
-      if (this.bloquearEquipes) return;
 
       const equipeEncontrada = this.equipes[index];
-      console.log(index);
-      console.log(equipeEncontrada);
 
       const equipeJaSelecionada = this.equipesSelecionadas.find(
         (equipe) => equipe.codigo === equipeEncontrada.codigo
@@ -150,24 +155,48 @@ export default {
         return;
       }
       this.equipesSelecionadas.push(equipeEncontrada);
+      this.verificarBloquearSelecao();
     },
 
     verificarBloquearSelecao() {
-      console.log("@@@@@@@@", this.equipesSelecionadas);
-      console.log("@@@@@@@@", this.equipesSelecionadas.length);
       if (this.equipesSelecionadas.length >= 2) {
-        this.bloquearEquipes = true;
-        console.log(this.bloquearEquipes);
+        this.bloquearBotaoCadastrar = true;
         return;
       }
 
-      this.bloquearEquipes = false;
+      this.bloquearBotaoCadastrar = false;
     },
-  },
 
-  watch: {
-    filtroNome() {
-      console.log(this.filtroNome);
+    async cadastrarEquipes() {
+      const res = await this.registrarEquipePorFase({
+        equipes: this.equipesSelecionadas,
+        fase: this.faseSelecionada,
+      });
+
+      console.log(res);
+      if (res.status === 201) {
+        this.equipesSelecionadas = [];
+        this.contadorAttEquipe++;
+
+        await this.$swal.fire({
+          title: "Sucesso",
+          text: "Cadastro realizado com sucesso!",
+          icon: "success",
+          timer: 2500,
+          timerProgressBar: true,
+          showCloseButton: true,
+        });
+      } else {
+        await this.$swal.fire({
+          title: "Erro",
+          text:
+            res.response?.data?.mensagem ||
+            "Erro desconhecido ao cadastrar corrida das equipes, tente novamente!",
+          icon: "error",
+          showCloseButton: true,
+          showConfirmationButton: true,
+        });
+      }
     },
   },
 };

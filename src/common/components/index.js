@@ -7,6 +7,7 @@ import SelectPadrao from "./SelectPadrao/index.vue";
 import MiniCardPadrao from "./MiniCardPadrao/index.vue";
 import SelecionarEquipes from "./SelecionarEquipes/index.vue";
 import CardCorrida from "./CardCorrida/index.vue";
+import SelecionarPartipantesCorrida from "./SelecionarPartipantesCorrida/index.vue";
 
 // Layout
 import MenuLateralLogo from "./_Layout/MenuLateralLogo/index.vue";
@@ -22,6 +23,7 @@ export default {
     app.component("MiniCardPadrao", MiniCardPadrao);
     app.component("SelecionarEquipes", SelecionarEquipes);
     app.component("CardCorrida", CardCorrida);
+    app.component("SelecionarPartipantesCorrida", SelecionarPartipantesCorrida);
 
     // Layout
     app.component("MenuLateralLogo", MenuLateralLogo);

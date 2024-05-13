@@ -1,0 +1,29 @@
+.selecao-equipe {
+  width: 60vw;
+  min-height: 10rem;
+  height: 100%;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 10px;
+  background: #c3dcfd;
+  font-weight: 600;
+  font-size: 22px;
+  box-shadow: 5px 10px 20px -14px rgba(0, 0, 0, 0.75);
+  border-radius: 5px;
+  &:hover {
+    opacity: 0.5;
+  }
+  &.selecionada {
+    background-color: #1e7fff9f;
+  }
+
+  &.bloquear {
+    background-color: #6d6d6d;
+    // pointer-events: none;
+    cursor: not-allowed;
+  }
+}

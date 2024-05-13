@@ -1,6 +1,6 @@
 <template>
   <div class="selecao-equipes" v-if="!cronometroVisivel">
-    <div class="text-center" v-if="equipes.length">
+    <div class="text-center">
       <span>SELECIONE O ESTÁGIO DA CORRIDA:</span>
       <SelectPadrao
         :opcoes="estagiosCorrida"
@@ -10,22 +10,19 @@
     </div>
     <div class="titulo" v-if="equipes.length">
       <span>SELECIONE AS EQUIPES PARA PARTICIPAREM DA CORRIDA</span>
-      <br />
-      <span>EQUIPES SELECIONADAS: {{ equipesSelecionadas.length }}</span>
     </div>
     <div class="container-equipes">
       <div class="selecionar-equipes" v-if="equipes.length">
         <div v-for="(equipe, index) in equipes" :key="index">
-          <SelecionarEquipes
+          <SelecionarPartipantesCorrida
+            :equipes="equipe.equipes"
             @click="selecionarEquipe(index)"
-            :equipe="{
-              nome: equipe.nome,
-            }"
+            :key="contadorAtualizarParticipantes + index"
           >
-          </SelecionarEquipes>
+          </SelecionarPartipantesCorrida>
         </div>
       </div>
-      <div v-else>
+      <div v-if="!equipes.length && corridaGravar.estagio">
         <span>EQUIPES NÃO FORAM ENCONTRADAS PARA SEREM SELECIONADAS!</span>
       </div>
     </div>
@@ -39,7 +36,7 @@
         @click="exibirCronometro"
         :disabled="
           !equipes.length ||
-          !equipesSelecionadas.length ||
+          !equipesParticipantesSelecinada.length ||
           !corridaGravar.estagio
         "
       />
@@ -136,7 +133,8 @@ export default {
     return {
       equipes: [],
       mensagemErro: "",
-      equipesSelecionadas: [],
+      equipesParticipantesSelecinada: [],
+      contadorAtualizarParticipantes: 0,
       cronometroVisivel: false,
 
       tempoAtual: 0,
@@ -180,14 +178,14 @@ export default {
   },
 
   mounted() {
-    this.carregarEquipes();
+    // this.carregarEquipes();
   },
 
   created() {},
 
   computed: {
     formatarEquipesSelect() {
-      return this.equipesSelecionadas.map((equipe) => {
+      return this.equipesParticipantesSelecinada.map((equipe) => {
         return {
           texto: equipe.nome,
           valor: equipe.codigo,
@@ -201,14 +199,14 @@ export default {
   },
 
   methods: {
-    ...mapActions(useEquipe, ["listarEquipes"]),
+    ...mapActions(useEquipe, ["listarEquipes", "listarEquipesPorFase"]),
     ...mapActions(useCorrida, ["registrarCorrida"]),
 
     resetarCorrida() {
       this.fecharCronometro();
       this.exibirModalSetarTemposEquipes = false;
       this.temposMarcados = [];
-      this.equipesSelecionadas = [];
+      this.equipesParticipantesSelecinada = [];
 
       this.corridaGravar = {
         dataHoraInicio: null,
@@ -220,30 +218,22 @@ export default {
     },
 
     async carregarEquipes() {
-      const resultado = await this.listarEquipes({ filtros: { ativas: true } });
+      const resultado = await this.listarEquipesPorFase({
+        filtros: { fase: this.corridaGravar.estagio },
+      });
       if (resultado.status === 200) {
-        this.equipes = resultado.data.equipes;
+        this.equipes = resultado.data.equipesPorFase;
       } else {
-        this.mensagemErro =
-          resultado?.response?.data?.mensagem ||
-          "Erro inesperado, tente listar as equipes em outro momento, ou verifique sua conexão com a rede!";
+        this.equipes = []
       }
     },
 
     selecionarEquipe(index) {
-      const equipeEncontrada = this.equipes[index];
+      this.equipesParticipantesSelecinada = [];
 
-      const equipeJaSelecionada = this.equipesSelecionadas.find(
-        (equipe) => equipe.codigo === equipeEncontrada.codigo
-      );
-
-      if (equipeJaSelecionada) {
-        this.equipesSelecionadas = this.equipesSelecionadas.filter(
-          (equipe) => equipe.codigo !== equipeEncontrada.codigo
-        );
-        return;
+      if (this.equipes[index]) {
+        this.equipesParticipantesSelecinada = this.equipes[index].equipes;
       }
-      this.equipesSelecionadas.push(equipeEncontrada);
     },
 
     exibirCronometro() {
@@ -346,7 +336,7 @@ export default {
       const codigoEquipe = evento?.evento?.target?.value;
 
       if (codigoEquipe) {
-        this.equipesSelecionadas.forEach((equipe) => {
+        this.equipesParticipantesSelecinada.forEach((equipe) => {
           if (equipe.codigo === codigoEquipe) {
             this.temposMarcados[indexSelecionado].equipe = equipe;
           }
@@ -364,6 +354,8 @@ export default {
 
     setarEstagio(evento) {
       this.corridaGravar.estagio = evento?.evento?.target?.value || null;
+
+      this.carregarEquipes();
     },
 
     navegarPara(url) {

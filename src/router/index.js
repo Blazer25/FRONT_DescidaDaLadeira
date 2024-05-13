@@ -43,7 +43,7 @@ const routes = [
     name: "CadastrarEquipesPorFase",
     component: CadastrarEquipesPorFase,
     meta: {
-      auth: false,
+      auth: true,
     },
   },
   {
