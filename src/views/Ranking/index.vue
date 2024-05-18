@@ -90,10 +90,10 @@ export default {
     },
     getTrofeuIcone(rankIndex) {
       const icones = [
-        "src/assets/images/icones/trophy-1.svg",
-        "src/assets/images/icones/trophy-2.svg",
-        "src/assets/images/icones/trophy-3.svg",
-        "src/assets/images/icones/medal.svg",
+        "../../assets/images/icones/trophy-1.svg",
+        "../../assets/images/icones/trophy-2.svg",
+        "../../assets/images/icones/trophy-3.svg",
+        "../../assets/images/icones/medal.svg",
       ];
       return icones[rankIndex >= 3 ? 3 : rankIndex];
     },
