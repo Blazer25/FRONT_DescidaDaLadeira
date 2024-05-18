@@ -6,24 +6,24 @@
       <div class="w-100">
         <div class="informacoes">
           <MiniCardPadrao
-            :caminhoLogo="'../../../src/assets/images/icones/regulamento.svg'"
+            :caminhoLogo="'/assets/images/icones/regulamento.svg'"
             :texto="'Regulamento'"
             @click="redirecionar('regulamento')"
           />
           <MiniCardPadrao
-            :caminhoLogo="'../../../src/assets/images/icones/ranking.svg'"
+            :caminhoLogo="'/assets/images/icones/ranking.svg'"
             :texto="'Ranking'"
             @click="redirecionar('ranking')"
           />
           <MiniCardPadrao
             v-if="!usuarioLogado"
-            :caminhoLogo="'../../../src/assets/images/icones/login.svg'"
+            :caminhoLogo="'/assets/images/icones/login.svg'"
             :texto="'Login'"
             @click="redirecionar('login')"
           />
           <MiniCardPadrao
             v-if="usuarioLogado"
-            :caminhoLogo="'../../../src/assets/images/icones/adm.svg'"
+            :caminhoLogo="'/assets/images/icones/adm.svg'"
             :texto="'Área Admin'"
             @click="redirecionar('areaadministrativa')"
           />
@@ -31,7 +31,7 @@
         <div class="informacoes" style="margin-top: 1.5rem">
           <MiniCardPadrao
             v-if="usuarioLogado"
-            :caminhoLogo="'../../../src/assets/images/icones/logout.svg'"
+            :caminhoLogo="'/assets/images/icones/logout.svg'"
             :texto="'Sair'"
             @click="deslogarUsuario"
           />
