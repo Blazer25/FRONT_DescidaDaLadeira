@@ -23,7 +23,6 @@
 
   &.bloquear {
     background-color: #6d6d6d;
-    // pointer-events: none;
-    cursor: not-allowed;
+    pointer-events: none;
   }
 }

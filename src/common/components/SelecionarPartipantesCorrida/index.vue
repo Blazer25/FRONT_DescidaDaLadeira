@@ -1,7 +1,7 @@
 <template>
   <div
     class="selecao-equipe"
-    :class="[{ selecionada }]"
+    :class="[{ selecionada, bloquear }]"
     @click="selecionarEquipe"
   >
     <div v-for="equipe in equipes">
@@ -34,6 +34,10 @@ export default {
           nome: "teste3",
         },
       ],
+    },
+    bloquear: {
+      type: Boolean,
+      default: false
     },
   },
 

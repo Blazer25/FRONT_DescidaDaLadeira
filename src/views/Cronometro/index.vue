@@ -17,9 +17,7 @@
         :texto="'Ir para o cronômetro'"
         @click="exibirCronometro"
         :disabled="
-          !equipes.length ||
-          !equipesParticipantesSelecionadas.length ||
-          !corridaGravar.estagio
+          !equipesParticipantesSelecionadas.length || !corridaGravar.estagio
         "
       />
     </div>
@@ -33,6 +31,9 @@
             :equipes="equipe.equipes"
             @click="selecionarEquipe(index)"
             :key="contadorAtualizarParticipantes + index"
+            :bloquear="
+              indexSelecaoEquipe !== null && indexSelecaoEquipe !== index
+            "
           >
           </SelecionarPartipantesCorrida>
         </div>
@@ -139,6 +140,7 @@ export default {
       equipesParticipantesSelecionadas: [],
       contadorAtualizarParticipantes: 0,
       cronometroVisivel: false,
+      indexSelecaoEquipe: null,
 
       tempoAtual: 0,
       tempoInicial: 0,
@@ -210,6 +212,7 @@ export default {
       this.exibirModalSetarTemposEquipes = false;
       this.temposMarcados = [];
       this.equipesParticipantesSelecionadas = [];
+      this.indexSelecaoEquipe = null;
 
       this.corridaGravar = {
         dataHoraInicio: null,
@@ -224,6 +227,10 @@ export default {
       const resultado = await this.listarEquipesPorFase({
         filtros: { fase: this.corridaGravar.estagio },
       });
+
+      this.equipesParticipantesSelecionadas = [];
+      this.indexSelecaoEquipe = null;
+
       if (resultado.status === 200) {
         this.equipes = resultado.data.equipesPorFase;
       } else {
@@ -232,10 +239,18 @@ export default {
     },
 
     selecionarEquipe(index) {
-      this.equipesParticipantesSelecionadas = [];
+      // this.contadorAtualizarParticipantes++;
 
-      if (this.equipes[index]) {
-        this.equipesParticipantesSelecionadas = this.equipes[index].equipes;
+      if (this.indexSelecaoEquipe === index) {
+        this.indexSelecaoEquipe = null;
+        this.equipesParticipantesSelecionadas = [];
+      } else {
+        this.indexSelecaoEquipe = index;
+        if (this.equipes[index]) {
+          this.equipesParticipantesSelecionadas = this.equipes[index].equipes;
+        } else {
+          this.equipesParticipantesSelecionadas = [];
+        }
       }
     },
 
@@ -314,7 +329,6 @@ export default {
 
       if (resultado.status === 201) {
         this.resetarCorrida();
-
         await this.$swal.fire({
           title: "Sucesso",
           text: "Corrida registrada!",
