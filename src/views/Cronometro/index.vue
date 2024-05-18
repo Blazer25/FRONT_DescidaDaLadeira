@@ -8,6 +8,21 @@
         @selectOpcoes="setarEstagio"
       />
     </div>
+    <div class="d-flex justify-content-center botoes" v-if="equipes.length">
+      <BotaoPadrao
+        :texto="'Voltar'"
+        @click="navegarPara('areaadministrativa')"
+      />
+      <BotaoPadrao
+        :texto="'Ir para o cronômetro'"
+        @click="exibirCronometro"
+        :disabled="
+          !equipes.length ||
+          !equipesParticipantesSelecionadas.length ||
+          !corridaGravar.estagio
+        "
+      />
+    </div>
     <div class="titulo" v-if="equipes.length">
       <span>SELECIONE AS EQUIPES PARA PARTICIPAREM DA CORRIDA</span>
     </div>
@@ -25,21 +40,6 @@
       <div v-if="!equipes.length && corridaGravar.estagio">
         <span>EQUIPES NÃO FORAM ENCONTRADAS PARA SEREM SELECIONADAS!</span>
       </div>
-    </div>
-    <div class="d-flex justify-content-center botoes">
-      <BotaoPadrao
-        :texto="'Voltar'"
-        @click="navegarPara('areaadministrativa')"
-      />
-      <BotaoPadrao
-        :texto="'Ir para o cronômetro'"
-        @click="exibirCronometro"
-        :disabled="
-          !equipes.length ||
-          !equipesParticipantesSelecinada.length ||
-          !corridaGravar.estagio
-        "
-      />
     </div>
   </div>
 
@@ -71,7 +71,10 @@
         <BotaoPadrao
           :texto="'Marcar Tempo'"
           @click="marcarTempo"
-          :disabled="!cronometroIniciou"
+          :disabled="
+            !cronometroIniciou ||
+            temposMarcados.length >= equipesParticipantesSelecionadas.length
+          "
         />
       </div>
 
@@ -133,7 +136,7 @@ export default {
     return {
       equipes: [],
       mensagemErro: "",
-      equipesParticipantesSelecinada: [],
+      equipesParticipantesSelecionadas: [],
       contadorAtualizarParticipantes: 0,
       cronometroVisivel: false,
 
@@ -185,7 +188,7 @@ export default {
 
   computed: {
     formatarEquipesSelect() {
-      return this.equipesParticipantesSelecinada.map((equipe) => {
+      return this.equipesParticipantesSelecionadas.map((equipe) => {
         return {
           texto: equipe.nome,
           valor: equipe.codigo,
@@ -206,7 +209,7 @@ export default {
       this.fecharCronometro();
       this.exibirModalSetarTemposEquipes = false;
       this.temposMarcados = [];
-      this.equipesParticipantesSelecinada = [];
+      this.equipesParticipantesSelecionadas = [];
 
       this.corridaGravar = {
         dataHoraInicio: null,
@@ -224,15 +227,15 @@ export default {
       if (resultado.status === 200) {
         this.equipes = resultado.data.equipesPorFase;
       } else {
-        this.equipes = []
+        this.equipes = [];
       }
     },
 
     selecionarEquipe(index) {
-      this.equipesParticipantesSelecinada = [];
+      this.equipesParticipantesSelecionadas = [];
 
       if (this.equipes[index]) {
-        this.equipesParticipantesSelecinada = this.equipes[index].equipes;
+        this.equipesParticipantesSelecionadas = this.equipes[index].equipes;
       }
     },
 
@@ -311,6 +314,27 @@ export default {
 
       if (resultado.status === 201) {
         this.resetarCorrida();
+
+        await this.$swal.fire({
+          title: "Sucesso",
+          text: "Corrida registrada!",
+          icon: "success",
+          timer: 2500,
+          timerProgressBar: true,
+          showCloseButton: true,
+        });
+      } else {
+        console.log(resultado);
+        console.log(this.corridaGravar.temposChegadas);
+        await this.$swal.fire({
+          title: "Erro",
+          text:
+            resultado.response?.data?.mensagem ||
+            "Erro desconhecido ao registrar corrida, tente novamente!",
+          icon: "error",
+          showCloseButton: true,
+          showConfirmationButton: true,
+        });
       }
     },
 
@@ -336,7 +360,7 @@ export default {
       const codigoEquipe = evento?.evento?.target?.value;
 
       if (codigoEquipe) {
-        this.equipesParticipantesSelecinada.forEach((equipe) => {
+        this.equipesParticipantesSelecionadas.forEach((equipe) => {
           if (equipe.codigo === codigoEquipe) {
             this.temposMarcados[indexSelecionado].equipe = equipe;
           }

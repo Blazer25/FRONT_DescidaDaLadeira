@@ -105,6 +105,7 @@
           <div v-if="integrante.ativo">
             <p>{{ integrante.nomeCompleto }}</p>
             <p>RA: {{ integrante.RA }}</p>
+            <hr>
           </div>
         </p>
 

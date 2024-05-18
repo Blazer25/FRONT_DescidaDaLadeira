@@ -173,7 +173,6 @@ export default {
         fase: this.faseSelecionada,
       });
 
-      console.log(res);
       if (res.status === 201) {
         this.equipesSelecionadas = [];
         this.contadorAttEquipe++;

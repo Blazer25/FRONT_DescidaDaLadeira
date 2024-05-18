@@ -8,9 +8,10 @@ const atualizarTokenAutorizacaoHeader = () => {
     delete instanciaAxios.defaults.headers.common["Authorization"];
   }
 };
-
 const instanciaAxios = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: window.location.origin.includes("localhost")
+    ? "http://localhost:3000"
+    : "https://api-descidadaladeira.onrender.com/",
   headers: {
     "Content-Type": "application/json",
   },

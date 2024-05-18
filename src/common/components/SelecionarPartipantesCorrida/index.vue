@@ -4,9 +4,8 @@
     :class="[{ selecionada }]"
     @click="selecionarEquipe"
   >
-    <div v-for="(equipe, index) in equipes">
-      <span>{{ equipe.nome }}</span
-      ><span v-if="index !== equipes.length - 1">VS</span>
+    <div v-for="equipe in equipes">
+      <span>{{ equipe.nome }}</span>
     </div>
   </div>
 </template>

@@ -5,14 +5,12 @@
   .tabela {
     display: flex;
     width: 100%;
-    justify-content: center;
-    align-items: center;
-
     padding: 1rem;
     overflow: auto;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
   }
 }
-
 @media (max-width: 767.98px) {
   .container {
     flex-direction: column;
