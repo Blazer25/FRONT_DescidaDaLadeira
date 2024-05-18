@@ -5,7 +5,7 @@
         <div class="fechar" @click="fecharModal" v-if="botaoFechar">
           <img
             class="icone-fechar"
-            src="../../../assets/images/icones/close-icon.svg"
+            src="/assets/images/icones/close-icon.svg"
             alt="Botão de fechar modal"
           />
         </div>

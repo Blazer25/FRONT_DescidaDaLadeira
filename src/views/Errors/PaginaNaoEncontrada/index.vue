@@ -5,7 +5,7 @@
     <div class="informacoes">
       <p class="titulo">Página não encontrada</p>
       <img
-        src="../../../assets/images/gifs/404.gif"
+        src="/assets/images/gifs/404.gif"
         alt="pagina não encontrada"
         class="gif"
       />

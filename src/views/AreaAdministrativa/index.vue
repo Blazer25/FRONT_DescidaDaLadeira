@@ -11,12 +11,12 @@
             @click="redirecionar('corridas')"
           />
           <MiniCardPadrao
-            :caminhoLogo="'/src/assets/images/icones/clock.svg'"
+            :caminhoLogo="'/assets/images/icones/clock.svg'"
             :texto="'Cronômetro'"
             @click="redirecionar('cronometro')"
           />
           <MiniCardPadrao
-            :caminhoLogo="'/src/assets/images/icones/register.svg'"
+            :caminhoLogo="'/assets/images/icones/register.svg'"
             :texto="'Registrar equipes'"
             @click="redirecionar('registrarEquipes')"
           />
@@ -24,24 +24,24 @@
         <br />
         <div class="informacoes">
           <MiniCardPadrao
-            :caminhoLogo="'/src/assets/images/icones/team.svg'"
+            :caminhoLogo="'/assets/images/icones/team.svg'"
             :texto="'Listar Equipes'"
             @click="redirecionar('listarEquipes')"
           />
           <MiniCardPadrao
-            :caminhoLogo="'/src/assets/images/icones/ranking.svg'"
+            :caminhoLogo="'/assets/images/icones/ranking.svg'"
             :texto="'Ranking'"
             @click="redirecionar('ranking')"
           />
           <MiniCardPadrao
             v-if="!usuarioLogado"
-            :caminhoLogo="'/src/assets/images/icones/login.svg'"
+            :caminhoLogo="'/assets/images/icones/login.svg'"
             :texto="'Login'"
             @click="redirecionar('login')"
           />
           <MiniCardPadrao
             v-if="usuarioLogado"
-            :caminhoLogo="'/src/assets/images/icones/logout.svg'"
+            :caminhoLogo="'/assets/images/icones/logout.svg'"
             :texto="'Sair'"
             @click="deslogarUsuario"
           />
@@ -49,7 +49,7 @@
         <br />
         <div class="informacoes">
           <MiniCardPadrao
-            :caminhoLogo="'/src/assets/images/icones/corridas.svg'"
+            :caminhoLogo="'/assets/images/icones/corridas.svg'"
             :texto="'Corridas por fase'"
             @click="redirecionar('cadastrarCorridasPorFase')"
           />

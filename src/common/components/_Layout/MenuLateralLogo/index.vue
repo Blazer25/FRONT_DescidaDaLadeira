@@ -1,14 +1,14 @@
 <template>
   <div class="voltar" @click="voltar" v-if="!ocultarVoltar">
     <img
-      src="../../../../assets/images/icones/left-arrow-svgrepo-com.svg"
+      src="/../assets/images/icones/left-arrow-svgrepo-com.svg"
       alt="Voltar"
       class="icone-voltar"
     />
   </div>
   <div class="logo">
     <img
-      src="../../../../assets/images/logo/descida-da-ladeira.svg"
+      src="/../assets/images/logo/descida-da-ladeira.svg"
       alt="logo descida da ladeira"
       class="tamanho-logo"
     />
