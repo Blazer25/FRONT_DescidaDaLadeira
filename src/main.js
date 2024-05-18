@@ -1,8 +1,8 @@
 import { createApp } from "vue";
 import router from "./router";
 
-import "./assets/styles/reset.scss";
-import "./assets/styles/global.scss";
+import "../public/assets/styles/reset.scss";
+import "../public/assets/styles/global.scss";
 
 import common from "./common";
 
