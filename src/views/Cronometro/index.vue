@@ -8,7 +8,7 @@
         @selectOpcoes="setarEstagio"
       />
     </div>
-    <div class="d-flex justify-content-center botoes" v-if="equipes.length">
+    <div class="d-flex justify-content-center botoes mt-1" v-if="equipes.length">
       <BotaoPadrao
         :texto="'Voltar'"
         @click="navegarPara('areaadministrativa')"

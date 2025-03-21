@@ -14,7 +14,7 @@
       />
 
       <div v-if="faseSelecionada">
-        <p>Pesquisar equipe pelo nome:</p>
+        <p class="mt-1">Pesquisar equipe pelo nome:</p>
         <div class="d-flex">
           <InputPadrao
             class="mb-1"
@@ -46,7 +46,7 @@
         <p>Não foram encontradas equipes para serem selecionadas!</p>
       </div>
       <div class="botao-cadastrar" v-if="faseSelecionada && equipes.length">
-        <p v-if="equipesSelecionadas.length > 3">
+        <p v-if="equipesSelecionadas.length > 3" class="mb-1">
           Permitido cadastrar até 3 equipes por corrida!
         </p>
         <BotaoPadrao

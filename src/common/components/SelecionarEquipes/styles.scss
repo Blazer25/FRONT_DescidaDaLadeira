@@ -1,4 +1,5 @@
 .selecao-equipe {
+  color: white;
   width: 12rem;
   min-height: 10rem;
   height: 100%;
@@ -10,7 +11,7 @@
   flex-direction: column;
   flex-wrap: wrap;
   padding: 10px;
-  background: #c3dcfd;
+  background: #fb3939;
   font-weight: 600;
   font-size: 22px;
   box-shadow: 5px 10px 20px -14px rgba(0, 0, 0, 0.75);
@@ -19,7 +20,7 @@
     opacity: 0.5;
   }
   &.selecionada {
-    background-color: #1e7fff9f;
+    background-color: #7d0404;
   }
 
   &.bloquear {
