@@ -5,6 +5,25 @@
     </label>
 
     <input
+      v-if="mask"
+      :id="id"
+      :type="type"
+      :value="value"
+      :placeholder="placeholder"
+      :disabled="disabled"
+      @input="atualizaInput"
+      class="inputPadrao__input"
+      :class="[
+        inputClasses,
+        { 'inputPadrao__input--error': error },
+        { inputPadrao__disabled: disabled },
+        { 'inputPadrao__input--info': info && !error },
+      ]"
+      v-mask="mask"
+    />
+
+    <input
+      v-if="!mask"
       :id="id"
       :type="type"
       :value="value"
@@ -79,6 +98,12 @@ export default {
     },
 
     info: {
+      type: String,
+      required: false,
+      default: "",
+    },
+
+    mask: {
       type: String,
       required: false,
       default: "",

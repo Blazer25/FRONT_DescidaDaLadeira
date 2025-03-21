@@ -3,7 +3,7 @@
   height: 100svh;
 
   .informacoes {
-    width: 60%;
+    width: 75%;
     height: 100svh;
     display: flex;
     align-items: center;
@@ -19,22 +19,6 @@
       height: 4rem;
     }
   }
-
-  .tituloModal {
-    font-size: 1.8rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-  }
-
-  .registro-sucesso {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    font-size: 2rem;
-  }
 }
 
 @media (max-width: 767.98px) {
@@ -47,4 +31,21 @@
       width: 100%;
     }
   }
+}
+
+.tituloModal {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+
+.registro-sucesso {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  font-size: 2rem;
 }

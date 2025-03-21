@@ -30,8 +30,7 @@
       padding: 10px;
       border-radius: 10px;
       cursor: pointer;
-      color: blue;
-
+      color: rgb(255, 0, 0);
 
       &:hover {
         opacity: 0.8;
@@ -41,22 +40,22 @@
 }
 
 .fundo-padrao {
-  background: rgb(1, 119, 140);
+  background: rgb(140, 1, 20);
 }
 .fundo-fase1 {
-  background: rgb(107, 134, 251);
+  background: rgb(251, 107, 107);
 }
 .fundo-fase2 {
-  background: rgb(55, 89, 239);
+  background: rgb(239, 55, 55);
 }
 .fundo-fase3 {
-  background: rgb(20, 52, 197);
+  background: rgb(197, 20, 20);
 }
 .fundo-fase4 {
-  background: rgb(8, 28, 119);
+  background: rgb(119, 8, 8);
 }
 .fundo-final {
-  background: rgb(1, 12, 61);
+  background: rgb(61, 1, 1);
 }
 
 .titulo-fase {

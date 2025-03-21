@@ -1,5 +1,5 @@
 <template>
-  <select @change="selecionarOpcao($event)">
+  <select @change="selecionarOpcao($event)" :class="this.class">
     <option value="" selected>{{ placeholder }}</option>
     <option v-for="opcao in opcoes" :key="opcao.valor" :value="opcao.valor">
       {{ opcao.texto }}
@@ -28,6 +28,11 @@ export default {
       type: null,
       required: false,
       default: null
+    },
+    class: {
+      type: String,
+      required: false,
+      default: "",
     },
   },
   methods: {

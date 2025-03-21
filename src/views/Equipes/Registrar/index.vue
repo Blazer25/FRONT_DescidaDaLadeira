@@ -2,21 +2,33 @@
   <div class="container">
     <MenuLateralLogo />
     <div class="informacoes" v-if="!registroSucesso">
-      <div class="w-65">
         <div v-if="!trocarInputs">
           <div class="input-registrar">
-            <label>Nome da equipe</label>
-            <input type="text" v-model="formEquipe.nome" />
+            <InputPadrao
+            :descricao="'Nome da equipe:'"
+            :value="formEquipe.nome"
+            :placeholder="'Digite aqui o nome da equipe:'"
+            @input:padrao="formEquipe.nome = $event"
+          />
           </div>
+
+          <div class="input-registrar">
+            <InputPadrao
+            :descricao="'Número do carrinho:'"
+            :value="formEquipe.numeroCarrinho"
+            :placeholder="'Digite aqui o número do carrinho:'"
+            @input:padrao="formEquipe.numeroCarrinho = $event"
+            :mask="'##'"
+          />
+          </div>
+
           <div class="input-registrar">
             <label>Quantidade de integrantes</label>
-            <select v-model="formEquipe.quantidadeIntegrantes">
-              <option value="" selected>Selecione:</option>
-              <option value="2">2 integrantes</option>
-              <option value="3">3 integrantes</option>
-              <option value="4">4 integrantes</option>
-              <option value="5">5 integrantes</option>
-            </select>
+            <SelectPadrao
+              :opcoes="quantidadeIntegrantes"
+              :placeholder="'Selecione:'"
+              @selectOpcoes="setarQuantidadeIntegrantes"
+            />
           </div>
 
           <BotaoPadrao
@@ -29,22 +41,18 @@
 
         <div v-if="trocarInputs">
           <div class="input-registrar">
-            <label
-              >Nome completo do {{ alterarFormIntegrantes }}° integrante</label
-            >
-            <input
-              type="text"
-              v-model="
-                formEquipe.integrantes[alterarFormIntegrantes].nomeCompleto
-              "
-            />
+            <InputPadrao
+            :descricao="`Nome completo do ${ alterarFormIntegrantes }° integrante`"
+            :value="formEquipe.integrantes[alterarFormIntegrantes].nomeCompleto"
+            @input:padrao="formEquipe.integrantes[alterarFormIntegrantes].nomeCompleto = $event"
+          />
           </div>
           <div class="input-registrar">
-            <label>RA do {{ alterarFormIntegrantes }}° integrante</label>
-            <input
-              type="text"
-              v-model="formEquipe.integrantes[alterarFormIntegrantes].RA"
-              v-mask="'#############'"
+            <InputPadrao
+              :descricao="`RA do ${ alterarFormIntegrantes }° integrante`"
+              :value="formEquipe.integrantes[alterarFormIntegrantes].RA"
+              :mask="'#############'"
+              @input:padrao="formEquipe.integrantes[alterarFormIntegrantes].RA = $event"
             />
           </div>
 
@@ -64,19 +72,20 @@
               @click:botaoPadrao="verificarEnviar"
               :disabled="
                 !formEquipe.integrantes[alterarFormIntegrantes].nomeCompleto ||
-                !formEquipe.integrantes[alterarFormIntegrantes].RA
+                !formEquipe.integrantes[alterarFormIntegrantes].RA ||
+                formEquipe.integrantes[alterarFormIntegrantes].RA.length < 13
               "
             />
           </div>
         </div>
       </div>
-    </div>
-    <div class="registro-sucesso" v-if="registroSucesso">
-      <div>
-        <p>
-          Equipe registrada com <span style="color: #00a2ff">sucesso</span>,
-        </p>
-        <p>agora você pode fechar está página</p>
+      <div class="registro-sucesso" v-if="registroSucesso">
+        <div>
+          <p>
+            Equipe registrada com <span style="color: #ff1100">sucesso</span>,
+          </p>
+          <p>agora você pode fechar está página</p>
+        </div>
       </div>
     </div>
 
@@ -85,12 +94,16 @@
       <ModalPadrao v-if="modal.revisar" @fechar-modal="modal.revisar = false">
         <p class="tituloModal">Revisar detalhes</p>
         <p class="fonte1p3 mb-1">
-          Revise os detalhes sobre sua equipe para realizar o cadastro:
+          Revise os detalhes sobre a equipe para realizar o cadastro:
         </p>
 
         <p class="fonte1p3">
           <span class="texto-negrito">Nome da equipe:</span>
           {{ formEquipe.nome }}
+        </p>
+        <p class="fonte1p3 mt-1 mb-1">
+          <span class="texto-negrito">Número do carrinho:</span>
+          {{ formEquipe.numeroCarrinho }}
         </p>
         <p class="fonte1p3 mb-1">
           <span class="texto-negrito">Número de integrantes:</span>
@@ -105,7 +118,6 @@
           <div v-if="integrante.ativo">
             <p>{{ integrante.nomeCompleto }}</p>
             <p>RA: {{ integrante.RA }}</p>
-            <hr>
           </div>
         </p>
 
@@ -115,7 +127,7 @@
             :texto="'Voltar'"
             @click="modal.revisar = false"
           />
-          <BotaoPadrao :texto="'Registrar Equipe'" @click="registrar" />
+          <BotaoPadrao :texto="'Registrar Equipe'" class="mt-1" @click="registrar" />
         </div>
       </ModalPadrao>
     </div>
@@ -128,7 +140,6 @@
         </p>
       </ModalPadrao>
     </div>
-  </div>
 </template>
 
 <script>
@@ -147,6 +158,7 @@ export default {
       formEquipe: {
         nome: null,
         quantidadeIntegrantes: "",
+        numeroCarrinho: "",
         integrantes: {
           1: {
             ativo: false,
@@ -180,6 +192,25 @@ export default {
       alterarFormIntegrantes: 1,
       registroSucesso: false,
       msgErro: "",
+
+      quantidadeIntegrantes: [
+        {
+          texto: "2 integrantes",
+          valor: 2,
+        },
+        {
+          texto: "3 integrantes",
+          valor: 3,
+        },
+        {
+          texto: "4 integrantes",
+          valor: 4,
+        },
+        {
+          texto: "5 integrantes",
+          valor: 5,
+        },
+      ]
     };
   },
 
@@ -235,11 +266,13 @@ export default {
         this.formEquipe.quantidadeIntegrantes
       );
       const integrantes = this.formataIntegrantes();
+      const numeroCarrinho = this.formEquipe.numeroCarrinho;
 
       const resultado = await this.registrarEquipe({
         nome,
         quantidadeIntegrantes,
         integrantes,
+        numeroCarrinho
       });
 
       if (!resultado) {
@@ -311,6 +344,10 @@ export default {
     fecharModalAviso() {
       this.modal.aviso = false;
       this.msgErro = "";
+    },
+
+    setarQuantidadeIntegrantes(evento) {
+      this.formEquipe.quantidadeIntegrantes = evento?.evento?.target?.value || null;
     },
   },
 

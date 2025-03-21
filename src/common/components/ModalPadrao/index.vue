@@ -9,9 +9,7 @@
             alt="Botão de fechar modal"
           />
         </div>
-        <div class="modal-slot">
           <slot />
-        </div>
       </div>
     </div>
   </transition>

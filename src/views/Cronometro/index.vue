@@ -338,8 +338,6 @@ export default {
           showCloseButton: true,
         });
       } else {
-        console.log(resultado);
-        console.log(this.corridaGravar.temposChegadas);
         await this.$swal.fire({
           title: "Erro",
           text:

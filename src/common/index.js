@@ -10,5 +10,3 @@ export default {
     app.config.globalProperties.$functions = functions;
   },
 };
-
-// 

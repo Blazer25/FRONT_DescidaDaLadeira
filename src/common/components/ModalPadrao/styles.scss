@@ -11,17 +11,18 @@
 }
 
 .modal {
+  width: 30rem;
   position: relative;
-  padding: 1rem 3rem;
+  padding: 1rem;
   border-radius: 20px;
   background-color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  max-width: 70vw; 
-  width: auto; 
-  max-height: 75vh;
+  max-width: 75vw; 
+  max-height: 80vh;
+  overflow-y: auto;
 }
 
 .fechar {
@@ -43,9 +44,4 @@
 .modal-fade-enter-active,
 .modal-fade-leave-active {
   transition: opacity 0.5s ease;
-}
-
-.modal-slot {
-  overflow-y:auto;
-  min-width: 30rem;
 }

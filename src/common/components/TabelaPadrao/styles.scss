@@ -5,7 +5,7 @@
   .custom-table {
     width: 100%;
     border-collapse: collapse;
-    border: 1px solid #00a2ff;
+    border: 1px solid #ff1100;
 
     th,
     td {
@@ -18,7 +18,7 @@
     }
 
     tbody tr:nth-child(even) {
-      background-color: #00a2ff;
+      background-color: #ff1100;
     }
   }
 }

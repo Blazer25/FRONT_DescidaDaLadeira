@@ -41,6 +41,14 @@
 
       <InputPadrao
         class="mb-1"
+        :value="equipeSelecionada.numeroCarrinho"
+        @input:padrao="equipeSelecionada.numeroCarrinho = $event"
+        :descricao="'Número do carrinho:'"
+        :mask="'##'"
+      />
+
+      <InputPadrao
+        class="mb-1"
         :value="equipeSelecionada.nome"
         @input:padrao="atualizarNomeEquipe"
         :descricao="'Nome da equipe:'"
@@ -81,6 +89,7 @@
 <script>
 import { mapActions } from "pinia";
 import { useEquipe } from "../../../stores/equipe";
+import { mask } from "vue-the-mask";
 
 export default {
   name: "ListarEquipes",
@@ -101,6 +110,7 @@ export default {
       colunas: [
         { name: "nome", label: "Nome" },
         { name: "quantidadeIntegrantes", label: "Quantidade de Integrantes" },
+        { name: "numeroCarrinho", label: "N° Carrinho" },
         { name: "ativa", label: "Ativa" },
       ],
       dados: [],
@@ -186,6 +196,7 @@ export default {
 
     prepararDadosAlterarEquipe() {
       const membrosEquipe = this.equipeSelecionada.integrantes;
+      const numeroCarrinho = this.equipeSelecionada.numeroCarrinho;
 
       const codigoEquipe = this.equipeSelecionada.codigo;
       const nomeEquipe = this.equipeSelecionada.nome;
@@ -205,17 +216,19 @@ export default {
         codigoEquipe,
         nomeEquipe,
         dadosIntegrantes,
+        numeroCarrinho
       };
     },
 
     async editarEquipe() {
-      const { codigoEquipe, nomeEquipe, dadosIntegrantes } =
+      const { codigoEquipe, nomeEquipe, dadosIntegrantes, numeroCarrinho } =
         this.prepararDadosAlterarEquipe();
 
       const resultado = await this.alterarEquipe({
         codigoEquipe,
         nomeEquipe,
         dadosIntegrantes,
+        numeroCarrinho
       });
 
       if (resultado.status === 201) {
