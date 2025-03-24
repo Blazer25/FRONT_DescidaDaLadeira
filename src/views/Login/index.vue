@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <MenuLateralLogo/>
+    <MenuLateralLogo />
 
     <div class="informacoes">
       <AvisoPadrao
@@ -11,12 +11,21 @@
       </AvisoPadrao>
       <div class="w-65">
         <div class="input-login">
-          <label>Login Administrativo</label>
-          <input type="text" v-model="form.login" />
+          <InputPadrao
+            :descricao="'Login Administrativo'"
+            :value="form.login"
+            :placeholder="'Digite aqui o login administrativo'"
+            @input:padrao="form.login = $event"
+          />
         </div>
         <div class="input-login">
-          <label>Senha</label>
-          <input type="password" v-model="form.senha" />
+          <InputPadrao
+            :descricao="'Senha'"
+            :value="form.senha"
+            :placeholder="'Digite aqui a senha'"
+            @input:padrao="form.senha = $event"
+            :type="'password'"
+          />
         </div>
 
         <BotaoPadrao

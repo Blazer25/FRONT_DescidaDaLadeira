@@ -14,7 +14,7 @@ select {
 }
 
 label {
-  color: #032c4e;
+  color: #000000;
   font-weight: 600;
   font-size: 1.2rem;
 }
@@ -192,7 +192,7 @@ label {
 }
 
 .tamanho-logo {
-  max-width: 30vw;
+  max-width: 25vw;
   border-radius: 1rem;
 }
 
@@ -202,4 +202,14 @@ label {
 
 .texto-negrito {
   font-weight: bold;
+}
+
+.nenhum-item-encontrado {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #ff1100;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  text-align: center;
 }

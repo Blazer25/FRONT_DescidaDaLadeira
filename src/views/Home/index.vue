@@ -67,6 +67,7 @@ export default {
         login: "/login",
         areaadministrativa: "/areaadministrativa",
         regulamento: "/regulamento",
+        ranking: "/ranking",
       };
 
       const rotaDestino = rotas[pagina];

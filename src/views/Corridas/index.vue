@@ -1,83 +1,87 @@
 <template>
-  <div class="corridas-container">
-    <div class="d-flex justify-content-center">
-      <h1 class="titulo">CORRIDAS</h1>
-    </div>
-    <div v-if="corridasCarregadas.length">
-      <p class="sub-titulo">1ª Fase</p>
-      <div v-if="corridas.fase1.length" class="overflow-auto">
-        <div class="linha-corridas">
-          <div
-            v-for="(corridaFase, indice) in corridas.fase1"
-            :key="corridaFase.codigo"
-          >
-            <CardCorrida
-              :corrida="corridaFase"
-              :indice="indice"
-              :estagio="'fase1'"
-            ></CardCorrida>
-          </div>
-        </div>
-      </div>
-      <div v-else>Não há registro de corridas na 1ª fase!</div>
-      <div v-if="corridas.fase2.length" class="overflow-auto">
-        <p class="sub-titulo">2ª Fase</p>
-        <div class="linha-corridas">
-          <div
-            v-for="(corridaFase, indice) in corridas.fase2"
-            :key="corridaFase.codigo"
-          >
-            <CardCorrida
-              :corrida="corridaFase"
-              :indice="indice"
-              :estagio="'fase2'"
-            ></CardCorrida>
-          </div>
-        </div>
-      </div>
-      <div v-if="corridas.fase3.length" class="overflow-auto">
-        <p class="sub-titulo">3ª Fase</p>
-        <div class="linha-corridas">
-          <div
-            v-for="(corridaFase, indice) in corridas.fase3"
-            :key="corridaFase.codigo"
-          >
-            <CardCorrida
-              :corrida="corridaFase"
-              :indice="indice"
-              :estagio="'fase3'"
-            ></CardCorrida>
-          </div>
-        </div>
-      </div>
-      <div v-if="corridas.fase4.length" class="overflow-auto">
-        <p class="sub-titulo">4ª Fase</p>
-        <div class="linha-corridas">
-          <div
-            v-for="(corridaFase, indice) in corridas.fase4"
-            :key="corridaFase.codigo"
-          >
-            <CardCorrida
-              :corrida="corridaFase"
-              :indice="indice"
-              :estagio="'fase4'"
-            ></CardCorrida>
-          </div>
-        </div>
-      </div>
+  <div class="container">
+    <MenuLateralLogo />
 
-      <div v-if="corridas.fase5.length" class="overflow-auto">
-        <p class="sub-titulo">Final</p>
-        <div class="linha-corridas">
-          <div
-            v-for="(corridaFase, indice) in corridas.fase5"
-            :key="corridaFase.codigo"
-          >
-            <CardCorrida
-              :corrida="corridaFase"
-              :indice="indice"
-              :estagio="'fase5'"
-            ></CardCorrida>
+    <div class="corridas">
+      <div class="d-flex justify-content-center">
+        <h1 class="titulo mt-1">CORRIDAS</h1>
+      </div>
+      <div v-if="corridasCarregadas.length">
+        <p class="sub-titulo">1ª Fase</p>
+        <div v-if="corridas.fase1.length" class="overflow-auto">
+          <div class="linha-corridas">
+            <div
+              v-for="(corridaFase, indice) in corridas.fase1"
+              :key="corridaFase.codigo"
+            >
+              <CardCorrida
+                :corrida="corridaFase"
+                :indice="indice"
+                :estagio="'fase1'"
+              ></CardCorrida>
+            </div>
+          </div>
+        </div>
+        <div v-else>Não há registro de corridas na 1ª fase!</div>
+        <div v-if="corridas.fase2.length" class="overflow-auto">
+          <p class="sub-titulo">2ª Fase</p>
+          <div class="linha-corridas">
+            <div
+              v-for="(corridaFase, indice) in corridas.fase2"
+              :key="corridaFase.codigo"
+            >
+              <CardCorrida
+                :corrida="corridaFase"
+                :indice="indice"
+                :estagio="'fase2'"
+              ></CardCorrida>
+            </div>
+          </div>
+        </div>
+        <div v-if="corridas.fase3.length" class="overflow-auto">
+          <p class="sub-titulo">3ª Fase</p>
+          <div class="linha-corridas">
+            <div
+              v-for="(corridaFase, indice) in corridas.fase3"
+              :key="corridaFase.codigo"
+            >
+              <CardCorrida
+                :corrida="corridaFase"
+                :indice="indice"
+                :estagio="'fase3'"
+              ></CardCorrida>
+            </div>
+          </div>
+        </div>
+        <div v-if="corridas.fase4.length" class="overflow-auto">
+          <p class="sub-titulo">4ª Fase</p>
+          <div class="linha-corridas">
+            <div
+              v-for="(corridaFase, indice) in corridas.fase4"
+              :key="corridaFase.codigo"
+            >
+              <CardCorrida
+                :corrida="corridaFase"
+                :indice="indice"
+                :estagio="'fase4'"
+              ></CardCorrida>
+            </div>
+          </div>
+        </div>
+  
+        <div v-if="corridas.fase5.length" class="overflow-auto">
+          <p class="sub-titulo">Final</p>
+          <div class="linha-corridas">
+            <div
+              v-for="(corridaFase, indice) in corridas.fase5"
+              :key="corridaFase.codigo"
+            >
+              <CardCorrida
+                :corrida="corridaFase"
+                :indice="indice"
+                :estagio="'fase5'"
+              ></CardCorrida>
+            </div>
           </div>
         </div>
       </div>

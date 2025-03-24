@@ -8,7 +8,7 @@
   </div>
   <div class="logo">
     <img
-      src="/assets/images/logo/descida-da-ladeira.png"
+      src="/assets/images/logo/descida-da-ladeira.jpg"
       alt="logo descida da ladeira"
       class="tamanho-logo"
     />

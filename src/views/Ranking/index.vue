@@ -2,7 +2,7 @@
   <div class="container">
     <MenuLateralLogo />
 
-    <div class="ranking" v-if="rankingCarregado">
+    <div class="ranking" v-if="rankingCorridas">
       <div v-for="(fase, objeto) in ranking">
         <div class="ranking-card" v-if="fase && fase.length">
           <p class="titulo-fase">{{ getTituloFase(objeto) }}</p>
@@ -18,10 +18,14 @@
               />
             </span>
             <span class="span-nome">{{ limitarTexto(rank.equipe.nome) }}</span>
-            <span class="span-tempo">{{ rank.tempo }}</span>
+            <span class="span-tempo">{{ rank.tempoFormatado }}</span>
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="ranking" v-else>
+      <p class="nenhum-item-encontrado">Não há ranking disponível no momento.</p>
     </div>
   </div>
 </template>
@@ -35,7 +39,7 @@ export default {
 
   data() {
     return {
-      rankingCarregado: null,
+      rankingCorridas: null,
 
       ranking: {
         fase1: [],
@@ -58,18 +62,20 @@ export default {
     async carregarRanking() {
       const resultado = await this.listarRanking();
       if (resultado.status === 200) {
-        this.rankingCarregado = resultado.data.ranking;
+        this.rankingCorridas = resultado.data.ranking;
         return;
       }
-      this.rankingCarregado = null;
+      this.rankingCorridas = null;
     },
 
     extrairRanking() {
-      this.ranking.fase1 = Object.values(this.rankingCarregado.fase1);
-      this.ranking.fase2 = Object.values(this.rankingCarregado.fase2);
-      this.ranking.fase3 = Object.values(this.rankingCarregado.fase3);
-      this.ranking.fase4 = Object.values(this.rankingCarregado.fase4);
-      this.ranking.fase5 = Object.values(this.rankingCarregado.fase5);
+      if (!this.rankingCorridas) return;
+
+      this.ranking.fase1 = Object.values(this.rankingCorridas.fase1);
+      this.ranking.fase2 = Object.values(this.rankingCorridas.fase2);
+      this.ranking.fase3 = Object.values(this.rankingCorridas.fase3);
+      this.ranking.fase4 = Object.values(this.rankingCorridas.fase4);
+      this.ranking.fase5 = Object.values(this.rankingCorridas.fase5);
     },
 
     limitarTexto(texto) {

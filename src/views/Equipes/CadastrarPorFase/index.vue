@@ -52,7 +52,7 @@
         <BotaoPadrao
           @click="cadastrarEquipes"
           :texto="'Cadastrar'"
-          :disabled="equipesSelecionadas.length > 3"
+          :disabled="equipesSelecionadas.length > 3 || !equipesSelecionadas.length"
         />
       </div>
     </div>
@@ -155,6 +155,7 @@ export default {
         return;
       }
       this.equipesSelecionadas.push(equipeEncontrada);
+      console.log(this.equipesSelecionadas)
       this.verificarBloquearSelecao();
     },
 

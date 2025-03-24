@@ -1,17 +1,9 @@
 <template>
   <div class="container">
     <MenuLateralLogo />
-    <AvisoPadrao
-      v-if="mensagemErro"
-      :mensagem="mensagemErro"
-      :exibir="mensagemErro"
-      @fechar-aviso="limparMensagemErro()"
-    >
-    </AvisoPadrao>
 
-    <div class="tabela">
-      <TabelaPadrao
-        v-if="dados.length"
+    <div class="tabela" v-if="dados.length">
+      <TabelaPadra
         :key="atualizadorTabela"
         :colunas="colunas"
         :dados="dados"
@@ -19,8 +11,12 @@
         @eventoTabela="eventoTabela"
       />
 
-      <p v-else>Não existem equipes para serem listadas!</p>
     </div>
+
+    <div v-else class="d-flex">
+      <p class="nenhum-item-encontrado">Não existem equipes para serem listadas!</p>
+    </div>
+    
 
     <ModalPadrao v-if="modais.editar" @fechar-modal="fecharModalEditar">
       <p class="fonte1p3 mb-1 texto-negrito">Editar informações da equipe:</p>
@@ -114,7 +110,6 @@ export default {
         { name: "ativa", label: "Ativa" },
       ],
       dados: [],
-      mensagemErro: "",
       modais: {
         editar: false,
       },
@@ -157,14 +152,8 @@ export default {
         const equipes = resultado.data.equipes;
         this.formatarEquipes(equipes);
       } else {
-        this.mensagemErro =
-          resultado?.response?.data?.mensagem ||
-          "Erro inesperado, tente listar as equipes em outro momento, ou verifique sua conexão com a rede!";
+        this.dados = [];
       }
-    },
-
-    limparMensagemErro() {
-      this.mensagemErro = "";
     },
 
     limparEquipeSelecionada() {
@@ -216,7 +205,7 @@ export default {
         codigoEquipe,
         nomeEquipe,
         dadosIntegrantes,
-        numeroCarrinho
+        numeroCarrinho,
       };
     },
 
@@ -228,7 +217,7 @@ export default {
         codigoEquipe,
         nomeEquipe,
         dadosIntegrantes,
-        numeroCarrinho
+        numeroCarrinho,
       });
 
       if (resultado.status === 201) {

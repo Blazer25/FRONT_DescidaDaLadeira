@@ -192,7 +192,7 @@ export default {
     formatarEquipesSelect() {
       return this.equipesParticipantesSelecionadas.map((equipe) => {
         return {
-          texto: equipe.nome,
+          texto: `Carrinho: ${equipe.numeroCarrinho} | Equipe: ${equipe.nome}`,
           valor: equipe.codigo,
         };
       });
@@ -213,6 +213,7 @@ export default {
       this.temposMarcados = [];
       this.equipesParticipantesSelecionadas = [];
       this.indexSelecaoEquipe = null;
+      this.equipes = []
 
       this.corridaGravar = {
         dataHoraInicio: null,
