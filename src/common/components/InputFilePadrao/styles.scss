@@ -1,0 +1,27 @@
+.file-upload-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.file-upload-input {
+  display: none;
+}
+
+.file-upload-label {
+  background: #c62828;
+  color: #fff;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+  &:hover {
+    background: #b71c1c;
+  }
+}
+
+.file-upload-filename {
+  font-size: 0.95rem;
+  color: #444;
+}

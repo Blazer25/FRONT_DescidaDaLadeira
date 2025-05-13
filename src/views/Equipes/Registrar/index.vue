@@ -31,6 +31,15 @@
             />
           </div>
 
+          <div class="input-file">
+            <InputFilePadrao
+              label-text="Selecionar logo"
+              :input-id="'logo-upload'"
+              @fileSelected="setLogoUrl"
+              :resetKey="resetKeyLogo"
+            />
+          </div>
+
           <BotaoPadrao
             class="botao"
             :texto="'Próximo'"
@@ -145,6 +154,8 @@
 <script>
 import { mapActions } from "pinia";
 import { useEquipe } from "../../../stores/equipe";
+import { useUpload } from "../../../stores/upload";
+import { uploadToS3urlPreAssinada } from "../../../common/functions/Upload";
 
 export default {
   name: "RegistrarEquipes",
@@ -159,6 +170,7 @@ export default {
         nome: null,
         quantidadeIntegrantes: "",
         numeroCarrinho: "",
+        logoUrl: null,
         integrantes: {
           1: {
             ativo: false,
@@ -210,7 +222,9 @@ export default {
           texto: "5 integrantes",
           valor: 5,
         },
-      ]
+      ],
+
+      resetKeyLogo: 0,
     };
   },
 
@@ -218,6 +232,7 @@ export default {
 
   methods: {
     ...mapActions(useEquipe, ["registrarEquipe"]),
+    ...mapActions(useUpload, ["uploadLogo"]),
 
     setarDadosIntegrantesAtivos() {
       const quantidadeIntegrantes = Number(
@@ -267,12 +282,14 @@ export default {
       );
       const integrantes = this.formataIntegrantes();
       const numeroCarrinho = this.formEquipe.numeroCarrinho;
+      const logoUrl = this.formEquipe.logoUrl;
 
       const resultado = await this.registrarEquipe({
         nome,
         quantidadeIntegrantes,
         integrantes,
-        numeroCarrinho
+        numeroCarrinho,
+        logoUrl
       });
 
       if (!resultado) {
@@ -348,6 +365,42 @@ export default {
 
     setarQuantidadeIntegrantes(evento) {
       this.formEquipe.quantidadeIntegrantes = evento?.evento?.target?.value || null;
+    },
+
+    async setLogoUrl(file) {
+      const res = await this.uploadLogo({
+        fileName: file.name,
+        contentType: file.type,
+      });
+
+      if (res.status === 200) {
+        const urlPreAssinada = res.data.url;
+        try {
+          const resUpload = await uploadToS3urlPreAssinada({ file, urlPreAssinada });
+          if (resUpload.status === 200) {
+            this.formEquipe.logoUrl = resUpload.data;
+          } else {
+            this.resetKeyLogo++;
+
+            this.modal.aviso = true;
+            this.msgErro =
+              resUpload.response?.data?.mensagem ||
+              "Erro inesperado, verifique sua conexão com a rede e tenta novamente!";
+          }
+        } catch (error) {
+          this.resetKeyLogo++;
+          console.error("Erro ao fazer upload do arquivo:", error);
+          this.modal.aviso = true;
+          this.msgErro = error?.message || "Erro inesperado, verifique sua conexão com a rede e tenta novamente!";
+        }
+      } else {
+        this.resetKeyLogo++;
+        this.modal.aviso = true;
+        this.msgErro =
+          res.response?.data?.mensagem ||
+          "Erro inesperado, verifique sua conexão com a rede e tenta novamente!";
+      }
+
     },
   },
 

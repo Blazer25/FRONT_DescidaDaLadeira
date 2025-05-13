@@ -7,13 +7,20 @@ export const useEquipe = defineStore("equipe", () => {
     equipesPorFaseSelecionada: null,
   };
 
-  async function registrarEquipe({ nome, quantidadeIntegrantes, integrantes, numeroCarrinho }) {
+  async function registrarEquipe({
+    nome,
+    quantidadeIntegrantes,
+    integrantes,
+    numeroCarrinho,
+    logoUrl,
+  }) {
     try {
       const dados = {
         nome,
         quantidadeIntegrantes,
         integrantes,
-        numeroCarrinho
+        numeroCarrinho,
+        logoUrl,
       };
 
       return await http.post("/equipe", dados);
@@ -57,12 +64,19 @@ export const useEquipe = defineStore("equipe", () => {
     }
   }
 
-  async function alterarEquipe({ codigoEquipe, nomeEquipe, dadosIntegrantes, numeroCarrinho }) {
+  async function alterarEquipe({
+    codigoEquipe,
+    nomeEquipe,
+    dadosIntegrantes,
+    numeroCarrinho,
+    logoUrl,
+  }) {
     try {
       const dados = {
         nomeEquipe,
         dadosIntegrantes,
-        numeroCarrinho
+        numeroCarrinho,
+        logoUrl
       };
 
       return await http.patch(`/equipe/${codigoEquipe}`, dados);
