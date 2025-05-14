@@ -3,7 +3,7 @@
     <MenuLateralLogo />
 
     <div class="tabela" v-if="dados.length">
-      <TabelaPadra
+      <TabelaPadrao
         :key="atualizadorTabela"
         :colunas="colunas"
         :dados="dados"

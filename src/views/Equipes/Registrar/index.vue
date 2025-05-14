@@ -23,7 +23,7 @@
           </div>
 
           <div class="input-registrar">
-            <label>Quantidade de integrantes</label>
+            <label>Quantidade de integrantes:</label>
             <SelectPadrao
               :opcoes="quantidadeIntegrantes"
               :placeholder="'Selecione:'"
@@ -31,9 +31,11 @@
             />
           </div>
 
-          <div class="input-file">
+          <div class="input-file mb-2">
+            <label>Selecione a logo da equipe:</label>
             <InputFilePadrao
-              label-text="Selecionar logo"
+              style="margin-top:5px;"
+              label-text="Selecionar"
               :input-id="'logo-upload'"
               @fileSelected="setLogoUrl"
               :resetKey="resetKeyLogo"
@@ -62,6 +64,16 @@
               :value="formEquipe.integrantes[alterarFormIntegrantes].RA"
               :mask="'#############'"
               @input:padrao="formEquipe.integrantes[alterarFormIntegrantes].RA = $event"
+            />
+          </div>
+
+          <div class="input-registrar">
+            <label>Curso do {{ alterarFormIntegrantes }}° integrante:</label>
+            <SelectPadrao
+              :key="alterarFormIntegrantes"
+              :opcoes="cursos"
+              :placeholder="'Selecione:'"
+              @selectOpcoes="setarCursoIntegrante"
             />
           </div>
 
@@ -106,6 +118,16 @@
           Revise os detalhes sobre a equipe para realizar o cadastro:
         </p>
 
+        
+        <div v-if="formEquipe.logoUrl">
+          <img
+            style="max-width: 10rem;"
+            v-if="formEquipe.logoUrl"
+            :src="formEquipe.logoUrl"
+            alt="Logo da equipe"
+            class="logo-equipe mb-1">
+        </div>
+
         <p class="fonte1p3">
           <span class="texto-negrito">Nome da equipe:</span>
           {{ formEquipe.nome }}
@@ -127,6 +149,13 @@
           <div v-if="integrante.ativo">
             <p>{{ integrante.nomeCompleto }}</p>
             <p>RA: {{ integrante.RA }}</p>
+            <p>
+              Curso:
+              <span v-if="integrante.curso">
+                {{ cursos.find((curso) => curso.valor === integrante.curso).texto }}
+              </span>
+              <span v-else>Não informado</span>
+            </p>
           </div>
         </p>
 
@@ -156,6 +185,7 @@ import { mapActions } from "pinia";
 import { useEquipe } from "../../../stores/equipe";
 import { useUpload } from "../../../stores/upload";
 import { uploadToS3urlPreAssinada } from "../../../common/functions/Upload";
+import { cursos } from "../../../common/functions/Consts";
 
 export default {
   name: "RegistrarEquipes",
@@ -176,26 +206,31 @@ export default {
             ativo: false,
             nomeCompleto: null,
             RA: null,
+            curso: null,
           },
           2: {
             ativo: false,
             nomeCompleto: null,
             RA: null,
+            curso: null,
           },
           3: {
             ativo: false,
             nomeCompleto: null,
             RA: null,
+            curso: null,
           },
           4: {
             ativo: false,
             nomeCompleto: null,
             RA: null,
+            curso: null,
           },
           5: {
             ativo: false,
             nomeCompleto: null,
             RA: null,
+            curso: null,
           },
         },
       },
@@ -225,6 +260,7 @@ export default {
       ],
 
       resetKeyLogo: 0,
+      cursos: cursos,
     };
   },
 
@@ -321,6 +357,7 @@ export default {
           retornarIntegrantes.push({
             nome: integrante.nomeCompleto,
             RA: integrante.RA,
+            curso: integrante.curso,
           });
         }
       }
@@ -334,26 +371,31 @@ export default {
           ativo: false,
           nomeCompleto: null,
           RA: null,
+          curso: null,
         },
         2: {
           ativo: false,
           nomeCompleto: null,
           RA: null,
+          curso: null,
         },
         3: {
           ativo: false,
           nomeCompleto: null,
           RA: null,
+          curso: null,
         },
         4: {
           ativo: false,
           nomeCompleto: null,
           RA: null,
+          curso: null,
         },
         5: {
           ativo: false,
           nomeCompleto: null,
           RA: null,
+          curso: null,
         },
       };
     },
@@ -367,7 +409,13 @@ export default {
       this.formEquipe.quantidadeIntegrantes = evento?.evento?.target?.value || null;
     },
 
+    setarCursoIntegrante(evento) {
+      this.formEquipe.integrantes[this.alterarFormIntegrantes].curso = evento?.evento?.target?.value || null;
+    },
+
     async setLogoUrl(file) {
+    this.formEquipe.logoUrl = null;
+
       const res = await this.uploadLogo({
         fileName: file.name,
         contentType: file.type,
@@ -377,14 +425,14 @@ export default {
         const urlPreAssinada = res.data.url;
         try {
           const resUpload = await uploadToS3urlPreAssinada({ file, urlPreAssinada });
-          if (resUpload.status === 200) {
-            this.formEquipe.logoUrl = resUpload.data;
+          if (resUpload?.resultado?.status === 200) {
+            this.formEquipe.logoUrl = resUpload.publicUrl;
           } else {
             this.resetKeyLogo++;
 
             this.modal.aviso = true;
             this.msgErro =
-              resUpload.response?.data?.mensagem ||
+              resUpload?.resultado?.response?.data?.mensagem ||
               "Erro inesperado, verifique sua conexão com a rede e tenta novamente!";
           }
         } catch (error) {

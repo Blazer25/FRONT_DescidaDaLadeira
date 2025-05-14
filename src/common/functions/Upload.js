@@ -8,12 +8,13 @@ import axios from "axios";
  */
 export async function uploadToS3urlPreAssinada({ file, urlPreAssinada }) {
   try {
-    const response = await axios.put(urlPreAssinada, file, {
+    const resultado = await axios.put(urlPreAssinada, file, {
       headers: {
         "Content-Type": file.type,
       },
     });
-    return response;
+    const publicUrl = urlPreAssinada.split("?")[0];
+    return { resultado, publicUrl };
   } catch (error) {
     throw error;
   }
