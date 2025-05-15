@@ -1,62 +1,132 @@
+$corFundoCard: #fff;
+$corBordaCard: #c62828;
+$corTitulo: #c62828;
+$corNome: #1976d2;
+$corTempo: #388e3c;
+$corTop3: #ffe0b2;
+$corFundoItem: #f5f5f5;
+$corNenhum: #b71c1c;
+
 .container {
   display: flex;
-  height: 100svh;
+  min-height: 100svh;
+}
 
-  div:empty {
-    display: none;
-  }
+.ranking {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
 
-  .ranking {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-    margin-top: 2rem;
+.ranking-fases {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  width: 100%;
+}
 
-    .ranking-card {
-      background-color: #ff1100;
-      padding: 0.5rem;
-      height: fit-content;
-      border-radius: 10px;
+.ranking-fase-card {
+  background: $corFundoCard;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem 1.2rem 1.2rem 1.2rem;
+  min-width: 260px;
+  max-width: 350px;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border: 2px solid $corBordaCard;
+}
 
-      .titulo-fase {
-        text-align: center;
-        font-size: 1.2rem;
-        font-weight: 600;
-      }
+.ranking-fase-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
 
-      .info-tempo {
-        margin: 8px;
-        display: flex;
-        justify-content: space-between;
+.ranking-fase-titulo {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: $corTitulo;
+  letter-spacing: 1px;
+}
 
-        .span-img {
-          width: 1.4rem;
-          margin-right: 5px;
-          text-align: center;
-        }
+.ranking-fase-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
 
-        .span-nome {
-          margin-right: 5px;
-        }
+.ranking-fase-item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  background: $corFundoItem;
+  border-radius: 6px;
+  padding: 0.4rem 0.7rem;
+  font-size: 1rem;
+  color: #444;
+  font-weight: 500;
+  transition: background 0.2s;
+}
 
-        .span-tempo {
-          margin-left: 5px;
-        }
-      }
-    }
+.ranking-fase-top3 {
+  background: $corTop3;
+  font-weight: bold;
+}
+
+.ranking-fase-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ranking-fase-nome {
+  flex: 1;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: $corNome;
+  word-break: break-word;
+}
+
+.ranking-fase-tempo {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: $corTempo;
+}
+
+.nenhum-item-encontrado {
+  margin-top: 2rem;
+  font-size: 1.1rem;
+  color: $corNenhum;
+  font-weight: 600;
+}
+
+@media (max-width: 900px) {
+  .ranking-fases {
+    gap: 1.2rem;
   }
 }
 
 @media (max-width: 767.98px) {
   .container {
     flex-direction: column;
+  }
 
-    .ranking {
-      flex-direction: column;
-      align-items: center;
-      width: 100%;
-    }
+  .ranking-fases {
+    flex-direction: column;
+    align-items: center;
+  }
+  .ranking-fase-card {
+    min-width: 90vw;
+    max-width: 100vw;
+    padding: 1rem 0.5rem;
   }
 }

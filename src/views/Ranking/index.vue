@@ -3,22 +3,28 @@
     <MenuLateralLogo />
 
     <div class="ranking" v-if="rankingCorridas">
-      <div v-for="(fase, objeto) in ranking">
-        <div class="ranking-card" v-if="fase && fase.length">
-          <p class="titulo-fase">{{ getTituloFase(objeto) }}</p>
-          <div
-            class="info-tempo"
-            v-for="(rank, rankIndex) in fase"
-            :key="`rank-${rankIndex}`"
-          >
-            <span class="span-img">
-              <img
-                :src="getTrofeuIcone(rankIndex)"
-                :style="{ width: rankIndex >= 3 ? '1rem' : '' }"
-              />
-            </span>
-            <span class="span-nome">{{ limitarTexto(rank.equipe.nome) }}</span>
-            <span class="span-tempo">{{ rank.tempoFormatado }}</span>
+      <div class="ranking-fases">
+        <div v-for="(fase, objeto) in ranking" :key="objeto" class="ranking-fase-card">
+          <div class="ranking-fase-header">
+            <span class="ranking-fase-titulo">{{ getTituloFase(objeto) }}</span>
+            <span class="ranking-fase-titulo" v-if="!fase.length">Sem corridas registradas</span>
+          </div>
+          <div class="ranking-fase-lista">
+            <div
+              class="ranking-fase-item"
+              v-for="(rank, rankIndex) in fase"
+              :key="`rank-${rankIndex}`"
+              :class="{ 'ranking-fase-top3': rankIndex < 3 }"
+            >
+              <span class="ranking-fase-img">
+                <img
+                  :src="getTrofeuIcone(rankIndex)"
+                  :style="{ width: rankIndex >= 3 ? '1.2rem' : '1.7rem' }"
+                />
+              </span>
+              <span class="ranking-fase-nome">{{ limitarTexto(rank.equipe.nome) }}</span>
+              <span class="ranking-fase-tempo">{{ rank.tempoFormatado }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -76,6 +82,8 @@ export default {
       this.ranking.fase3 = Object.values(this.rankingCorridas.fase3);
       this.ranking.fase4 = Object.values(this.rankingCorridas.fase4);
       this.ranking.fase5 = Object.values(this.rankingCorridas.fase5);
+
+      console.log(this.ranking);
     },
 
     limitarTexto(texto) {
