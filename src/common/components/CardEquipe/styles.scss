@@ -1,0 +1,118 @@
+.card-equipe {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  gap: 1.5rem;
+  transition: box-shadow 0.2s;
+  min-width: 280px;
+  max-width: 500px;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0,0,0,0.13);
+  }
+
+  &__logo {
+    width: 85px;
+    height: 85px;
+    border-radius: 40%;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  &__logo-placeholder {
+    color: #aaa;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  &__info {
+    flex: 1;
+    min-width: 0;
+  }
+  &__nome {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+    color: #c62828;
+    word-break: break-word;
+  }
+  &__detalhe {
+    margin: 0;
+    font-size: 1rem;
+    color: #444;
+    span {
+      font-weight: 600;
+      color: #222;
+    }
+  }
+  &__status {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #388e3c;
+    &.inativa {
+      color: #b71c1c;
+    }
+    span {
+      font-weight: 700;
+    }
+  }
+  &__acoes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  &__btn {
+    padding: 0.4rem 1.1rem;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    background: #c62828;
+    color: #fff;
+    transition: background 0.2s;
+    &.editar {
+      background: #1976d2;
+      &:hover {
+        background: #125ea2;
+      }
+    }
+    &.ativar {
+      background: #388e3c;
+      &:hover {
+        background: #256b28;
+      }
+    }
+    &.inativar {
+      background: #b71c1c;
+      &:hover {
+        background: #8a1515;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .card-equipe {
+    flex-direction: column;
+    padding: 1rem;
+    max-width: 100%;
+    &__acoes {
+      flex-direction: row;
+      justify-content: center;
+      gap: 1rem;
+    }
+  }
+}

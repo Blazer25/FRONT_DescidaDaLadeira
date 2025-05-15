@@ -3,16 +3,45 @@
   height: 100svh;
 
   .tabela {
-    display: flex;
     width: 100%;
     padding: 1rem;
     overflow: auto;
     margin-bottom: 2rem;
     margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .lista-cards-equipes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: flex-start;
+    width: 100%;
   }
 }
+
+@media (max-width: 1200px) {
+  .lista-cards-equipes {
+    gap: 1.2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .lista-cards-equipes {
+    gap: 1rem;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 767.98px) {
   .container {
     flex-direction: column;
+  }
+  .lista-cards-equipes {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
   }
 }

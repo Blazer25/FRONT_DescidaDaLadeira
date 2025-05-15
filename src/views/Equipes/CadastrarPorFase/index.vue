@@ -1,44 +1,32 @@
 <template>
   <div class="container">
-    <!-- <MenuLateralLogo /> -->
+    <MenuLateralLogo />
 
-    <div class="selecao mt-1">
-      <p>
-        Selecione a fase que gostaria de registrar as equipes participantes:
-      </p>
+    <div class="selecao">
+      <div class="text-center margin-1">
+        <p>
+          Selecione a fase que gostaria de registrar as equipes participantes:
+        </p>
 
-      <SelectPadrao
-        :opcoes="estagiosCorrida"
-        :placeholder="'Selecione a fase'"
-        @selectOpcoes="setarEstagio"
-      />
+        <SelectPadrao class="w-25" :opcoes="estagiosCorrida" :placeholder="'Selecione a fase'"
+          @selectOpcoes="setarEstagio" />
+      </div>
+
 
       <div v-if="faseSelecionada">
         <p class="mt-1">Pesquisar equipe pelo nome:</p>
         <div class="d-flex">
-          <InputPadrao
-            class="mb-1"
-            :value="filtroNome"
-            :placeholder="'Digite aqui o nome da equipe:'"
-            @input:padrao="atualizarFiltroNome"
-          />
-          <img
-            src="/assets/images/icones/lupa.svg"
-            alt="ícone pesquisar"
-            class="icone-pesquisar"
-            @click="carregarEquipes()"
-          />
+          <InputPadrao class="mb-1" :value="filtroNome" :placeholder="'Digite aqui o nome da equipe:'"
+            @input:padrao="atualizarFiltroNome" />
+          <img src="/assets/images/icones/lupa.svg" alt="ícone pesquisar" class="icone-pesquisar"
+            @click="carregarEquipes()" />
         </div>
       </div>
       <div class="equipes" v-if="faseSelecionada && equipes.length">
         <div v-for="(equipe, index) in equipes" :key="index">
-          <SelecionarEquipes
-            :key="index + contadorAttEquipe"
-            @click="selecionarEquipe(index)"
-            :equipe="{
-              nome: equipe.nome,
-            }"
-          >
+          <SelecionarEquipes :key="index + contadorAttEquipe" @click="selecionarEquipe(index)" :equipe="{
+            nome: equipe.nome,
+          }">
           </SelecionarEquipes>
         </div>
       </div>
@@ -49,11 +37,8 @@
         <p v-if="equipesSelecionadas.length > 3" class="mb-1">
           Permitido cadastrar até 3 equipes por corrida!
         </p>
-        <BotaoPadrao
-          @click="cadastrarEquipes"
-          :texto="'Cadastrar'"
-          :disabled="equipesSelecionadas.length > 3 || !equipesSelecionadas.length"
-        />
+        <BotaoPadrao @click="cadastrarEquipes" :texto="'Cadastrar'"
+          :disabled="equipesSelecionadas.length > 3 || !equipesSelecionadas.length" />
       </div>
     </div>
   </div>

@@ -1,128 +1,132 @@
 <template>
-  <div class="selecao-equipes" v-if="!cronometroVisivel">
-    <div class="text-center">
-      <span>SELECIONE O ESTÁGIO DA CORRIDA:</span>
-      <SelectPadrao
-        :opcoes="estagiosCorrida"
-        :placeholder="'Selecione o estágio'"
-        @selectOpcoes="setarEstagio"
-      />
-    </div>
-    <div class="d-flex justify-content-center botoes mt-1" v-if="equipes.length">
-      <BotaoPadrao
-        :texto="'Voltar'"
-        @click="navegarPara('areaadministrativa')"
-      />
-      <BotaoPadrao
-        :texto="'Ir para o cronômetro'"
-        @click="exibirCronometro"
-        :disabled="
-          !equipesParticipantesSelecionadas.length || !corridaGravar.estagio
-        "
-      />
-    </div>
-    <div class="titulo" v-if="equipes.length">
-      <span>SELECIONE AS EQUIPES PARA PARTICIPAREM DA CORRIDA</span>
-    </div>
-    <div class="container-equipes">
-      <div class="selecionar-equipes" v-if="equipes.length">
-        <div v-for="(equipe, index) in equipes" :key="index">
-          <SelecionarPartipantesCorrida
-            :equipes="equipe.equipes"
-            @click="selecionarEquipe(index)"
-            :key="contadorAtualizarParticipantes + index"
-            :bloquear="
-              indexSelecaoEquipe !== null && indexSelecaoEquipe !== index
-            "
-          >
-          </SelecionarPartipantesCorrida>
-        </div>
+  <div class="container">
+    <MenuLateralLogo />
+    <div class="selecao-equipes" v-if="!cronometroVisivel">
+      <div class="text-center margin-1">
+        <span>SELECIONE O ESTÁGIO DA CORRIDA:</span>
+        <SelectPadrao
+          :opcoes="estagiosCorrida"
+          :placeholder="'Selecione o estágio'"
+          @selectOpcoes="setarEstagio"
+        />
       </div>
-      <div v-if="!equipes.length && corridaGravar.estagio">
-        <span>EQUIPES NÃO FORAM ENCONTRADAS PARA SEREM SELECIONADAS!</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="container-cronometro" v-if="cronometroVisivel">
-    <div class="coluna-esquerda">
-      <div class="cronometro">{{ formatarTempo(tempoAtual) }}</div>
-      <div class="botoes">
-        <BotaoPadrao :texto="'Voltar'" @click="resetarCorrida" />
+      <div class="d-flex justify-content-center botoes mt-1" v-if="equipes.length">
         <BotaoPadrao
-          :texto="'Resetar'"
-          @click="resetarCorrida"
-          :disabled="!cronometroIniciou"
+          :texto="'Voltar'"
+          @click="navegarPara('areaadministrativa')"
         />
         <BotaoPadrao
-          :texto="'Iniciar'"
-          @click="iniciarCorrida"
-          v-if="!cronometroIniciou"
-        />
-        <BotaoPadrao
-          :texto="'Pausar'"
-          @click="pausarCronometro"
-          v-if="cronometroIniciou && !cronometroPausado"
-        />
-        <BotaoPadrao
-          :texto="'Continuar'"
-          @click="continuarCorrida"
-          v-if="cronometroIniciou && cronometroPausado"
-        />
-        <BotaoPadrao
-          :texto="'Marcar Tempo'"
-          @click="marcarTempo"
+          :texto="'Ir para o cronômetro'"
+          @click="exibirCronometro"
           :disabled="
-            !cronometroIniciou ||
-            temposMarcados.length >= equipesParticipantesSelecionadas.length
+            !equipesParticipantesSelecionadas.length || !corridaGravar.estagio
           "
         />
       </div>
-
-      <BotaoPadrao
-        class="botao-registrar"
-        :texto="'Selecionar Equipes'"
-        @click="abrirModalSetarTemposEquipes"
-        :disabled="!cronometroIniciou || !temposMarcados.length"
-      />
+      <div class="titulo" v-if="equipes.length">
+        <span>SELECIONE AS EQUIPES PARA PARTICIPAREM DA CORRIDA</span>
+      </div>
+      <div class="container-equipes">
+        <div class="selecionar-equipes" v-if="equipes.length">
+          <div v-for="(equipe, index) in equipes" :key="index">
+            <SelecionarPartipantesCorrida
+              :equipes="equipe.equipes"
+              @click="selecionarEquipe(index)"
+              :key="contadorAtualizarParticipantes + index"
+              :bloquear="
+                indexSelecaoEquipe !== null && indexSelecaoEquipe !== index
+              "
+            >
+            </SelecionarPartipantesCorrida>
+          </div>
+        </div>
+        <div v-if="!equipes.length && corridaGravar.estagio">
+          <span>EQUIPES NÃO FORAM ENCONTRADAS PARA SEREM SELECIONADAS!</span>
+        </div>
+      </div>
     </div>
-    <div class="coluna-direita">
+  
+    <div class="container-cronometro" v-if="cronometroVisivel">
+      <div class="coluna-esquerda">
+        <div class="cronometro">{{ formatarTempo(tempoAtual) }}</div>
+        <div class="botoes">
+          <BotaoPadrao :texto="'Voltar'" @click="resetarCorrida" />
+          <BotaoPadrao
+            :texto="'Resetar'"
+            @click="resetarCorrida"
+            :disabled="!cronometroIniciou"
+          />
+          <BotaoPadrao
+            :texto="'Iniciar'"
+            @click="iniciarCorrida"
+            v-if="!cronometroIniciou"
+          />
+          <BotaoPadrao
+            :texto="'Pausar'"
+            @click="pausarCronometro"
+            v-if="cronometroIniciou && !cronometroPausado"
+          />
+          <BotaoPadrao
+            :texto="'Continuar'"
+            @click="continuarCorrida"
+            v-if="cronometroIniciou && cronometroPausado"
+          />
+          <BotaoPadrao
+            :texto="'Marcar Tempo'"
+            @click="marcarTempo"
+            :disabled="
+              !cronometroIniciou ||
+              temposMarcados.length >= equipesParticipantesSelecionadas.length
+            "
+          />
+        </div>
+  
+        <BotaoPadrao
+          class="botao-registrar"
+          :texto="'Selecionar Equipes'"
+          @click="abrirModalSetarTemposEquipes"
+          :disabled="!cronometroIniciou || !temposMarcados.length"
+        />
+      </div>
+      <div class="coluna-direita">
+        <div
+          class="linha-tempo"
+          v-for="(tempoMarcado, index) in temposMarcados"
+          :key="index"
+        >
+          <span>{{ `${index + 1}° ${formatarTempo(tempoMarcado.tempo)}` }}</span>
+        </div>
+      </div>
+    </div>
+    <ModalPadrao
+      v-if="exibirModalSetarTemposEquipes"
+      @fechar-modal="definirModalSetarTemposEquipes"
+    >
+      <div class="titulo-modal">
+        <span> PARA CADA TEMPO, SELECIONE SUA RESPECTIVA EQUIPE</span>
+      </div>
       <div
         class="linha-tempo"
         v-for="(tempoMarcado, index) in temposMarcados"
         :key="index"
       >
-        <span>{{ `${index + 1}° ${formatarTempo(tempoMarcado.tempo)}` }}</span>
+        {{ `${index + 1}° ${formatarTempo(tempoMarcado.tempo)}` }}
+        <SelectPadrao
+          :opcoes="formatarEquipesSelect"
+          :placeholder="'Selecione a equipe'"
+          :linha="index"
+          @selectOpcoes="setarEquipesTempos"
+        />
       </div>
-    </div>
-  </div>
-  <ModalPadrao
-    v-if="exibirModalSetarTemposEquipes"
-    @fechar-modal="definirModalSetarTemposEquipes"
-  >
-    <div class="titulo-modal">
-      <span> PARA CADA TEMPO, SELECIONE SUA RESPECTIVA EQUIPE</span>
-    </div>
-    <div
-      class="linha-tempo"
-      v-for="(tempoMarcado, index) in temposMarcados"
-      :key="index"
-    >
-      {{ `${index + 1}° ${formatarTempo(tempoMarcado.tempo)}` }}
-      <SelectPadrao
-        :opcoes="formatarEquipesSelect"
-        :placeholder="'Selecione a equipe'"
-        :linha="index"
-        @selectOpcoes="setarEquipesTempos"
+  
+      <BotaoPadrao
+        :texto="'Salvar corrida'"
+        @click="salvarCorrida"
+        :disabled="todosTemposPossuemEquipes"
       />
-    </div>
+    </ModalPadrao>
 
-    <BotaoPadrao
-      :texto="'Salvar corrida'"
-      @click="salvarCorrida"
-      :disabled="todosTemposPossuemEquipes"
-    />
-  </ModalPadrao>
+    </div>
 </template>
 
 <script>

@@ -1,11 +1,14 @@
 .container {
   display: flex;
   height: 100svh;
-  justify-content: center;
-  padding: 1.5rem;
 
   .selecao {
+    width: 100%;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 
     .icone-pesquisar {
       max-width: 2rem;
@@ -26,3 +29,8 @@
   }
 }
 
+  @media (max-width: 767.98px) {
+    .container {
+      flex-direction: column;
+    }
+  }

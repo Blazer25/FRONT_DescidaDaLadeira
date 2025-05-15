@@ -39,19 +39,20 @@
             :texto="'Login'"
             @click="redirecionar('login')"
           />
+
           <MiniCardPadrao
-            v-if="usuarioLogado"
-            :caminhoLogo="'/assets/images/icones/logout.svg'"
-            :texto="'Sair'"
-            @click="deslogarUsuario"
+            :caminhoLogo="'/assets/images/icones/corridas.svg'"
+            :texto="'Corridas por fase'"
+            @click="redirecionar('cadastrarCorridasPorFase')"
           />
         </div>
         <br />
         <div class="informacoes">
           <MiniCardPadrao
-            :caminhoLogo="'/assets/images/icones/corridas.svg'"
-            :texto="'Corridas por fase'"
-            @click="redirecionar('cadastrarCorridasPorFase')"
+            v-if="usuarioLogado"
+            :caminhoLogo="'/assets/images/icones/logout.svg'"
+            :texto="'Sair'"
+            @click="deslogarUsuario"
           />
         </div>
       </div>

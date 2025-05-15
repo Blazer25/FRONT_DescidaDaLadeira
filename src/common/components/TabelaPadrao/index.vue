@@ -14,6 +14,7 @@
             {{ row[campo.name] }}
           </td>
           <SelectPadrao
+            :style="selectStyle"
             @selectOpcoes="selectOpcoes"
             v-if="opcoesSelect.length"
             :linha="row"
@@ -46,6 +47,11 @@ export default {
       type: Array,
       required: false,
       default: [],
+    },
+    selectStyle: {
+      type: String,
+      required: false,
+      default: "",
     },
   },
 

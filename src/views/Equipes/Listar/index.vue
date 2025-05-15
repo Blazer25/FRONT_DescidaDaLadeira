@@ -3,38 +3,35 @@
     <MenuLateralLogo />
 
     <div class="tabela" v-if="dados.length">
-      <TabelaPadrao
-        :key="atualizadorTabela"
-        :colunas="colunas"
-        :dados="dados"
-        :opcoesSelect="opcoesSelect"
-        @eventoTabela="eventoTabela"
-      />
-
+      <div class="lista-cards-equipes">
+        <CardEquipe
+          v-for="equipe in dados"
+          :key="equipe.codigo"
+          :equipe="equipe"
+          @editar="(e) => { equipeSelecionada = e; modais.editar = true; }"
+          @ativarInativar="(e) => { equipeSelecionada = e; ativarInativarEquipe(); }"
+        />
+      </div>
     </div>
 
     <div v-else class="d-flex">
       <p class="nenhum-item-encontrado">Não existem equipes para serem listadas!</p>
     </div>
     
-
     <ModalPadrao v-if="modais.editar" @fechar-modal="fecharModalEditar">
       <p class="fonte1p3 mb-1 texto-negrito">Editar informações da equipe:</p>
-
       <InputPadrao
         class="mb-1"
         :value="equipeSelecionada.codigo"
         :descricao="'Código da equipe:'"
         :disabled="true"
       />
-
       <InputPadrao
         class="mb-1"
         :value="equipeSelecionada.quantidadeIntegrantes"
         :descricao="'Quantidade de integrantes:'"
         :disabled="true"
       />
-
       <InputPadrao
         class="mb-1"
         :value="equipeSelecionada.numeroCarrinho"
@@ -42,16 +39,13 @@
         :descricao="'Número do carrinho:'"
         :mask="'##'"
       />
-
       <InputPadrao
         class="mb-1"
         :value="equipeSelecionada.nome"
         @input:padrao="atualizarNomeEquipe"
         :descricao="'Nome da equipe:'"
       />
-
       <p class="fonte1p3 mb-1 texto-negrito">Integrantes:</p>
-
       <span
         v-for="(integrante, index) in equipeSelecionada.integrantes"
         :key="index"
@@ -131,26 +125,11 @@ export default {
       "resetarState",
     ]),
 
-    eventoTabela(evento) {
-      this.atualizadorTabela++;
-      this.equipeSelecionada = evento.itens;
-      this.setEquipeSelecionada(this.equipeSelecionada);
-
-      const eventoSelecionado = evento?.evento?.target?.value;
-      if (eventoSelecionado === "editarEquipe") {
-        this.modais.editar = true;
-      }
-
-      if (eventoSelecionado === "inativarAtivarEquipe") {
-        this.ativarInativarEquipe();
-      }
-    },
-
     async carregarEquipes() {
       const resultado = await this.listarEquipes({});
       if (resultado.status === 200) {
         const equipes = resultado.data.equipes;
-        this.formatarEquipes(equipes);
+        this.dados = equipes
       } else {
         this.dados = [];
       }
@@ -163,12 +142,6 @@ export default {
     fecharModalEditar() {
       this.modais.editar = false;
       this.limparEquipeSelecionada();
-    },
-
-    formatarEquipes(equipes) {
-      this.dados = equipes.map((equipe) => {
-        return { ...equipe, ativa: equipe.ativa ? "Sim" : "Não" };
-      });
     },
 
     atualizarNomeEquipe(nome) {
