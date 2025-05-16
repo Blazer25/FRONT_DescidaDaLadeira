@@ -123,6 +123,53 @@
   }
 }
 
+.editar-tempo-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+.input-editar-tempo {
+  border: 1.5px solid #1976d2;
+  border-radius: 6px;
+  padding: 0.25rem 0.7rem;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1976d2;
+  background: #f5faff;
+  outline: none;
+  transition: border 0.2s;
+  width: 6.5rem;
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
+  &:focus {
+    border-color: #125ea2;
+    background: #e3f0ff;
+  }
+}
+
+.btn-editar-tempo {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.2rem 0.3rem;
+  display: flex;
+  align-items: center;
+  color: #1976d2;
+  font-size: 1.3rem;
+  border-radius: 50%;
+  transition: background 0.2s;
+  &:hover {
+    background: #e3f0ff;
+  }
+  &::before {
+    content: '\270E'; /* ícone de lápis unicode */
+    font-size: 1.2rem;
+    margin-right: 0;
+  }
+}
+
 @media (max-width: 600px) {
   .card-corrida {
     min-width: 90vw;

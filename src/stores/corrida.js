@@ -33,8 +33,23 @@ export const useCorrida = defineStore("corrida", () => {
     }
   }
 
+  async function editarTempoCorrida({ codigoCorrida, codigoEquipe, tempo }) {
+    try {
+      const dados = {
+        codigoCorrida,
+        codigoEquipe,
+        tempo,
+      };
+
+      return await http.patch(`/corrida/alterar-tempo-equipe`, dados);
+    } catch (error) {
+      return error;
+    }
+  }
+
   return {
     registrarCorrida,
-    listarCorridas
+    listarCorridas,
+    editarTempoCorrida
   };
 });

@@ -41,13 +41,20 @@
         <p>
           <span class="texto-negrito">Posição:</span> {{ tempos.posicao }}° lugar
         </p>
-        <p><span class="texto-negrito">Tempo:</span> {{ tempos.tempo }}</p>
+        <div class="editar-tempo-wrapper">
+          <span class="texto-negrito">Tempo:</span>
+          <input v-model="tempos.tempoEditavel" class="input-editar-tempo" :placeholder="tempos.tempo" />
+          <button class="btn-editar-tempo" @click="editarTempoEquipe(index)">Editar</button>
+        </div>
       </div>
     </div>
   </ModalPadrao>
 </template>
 
 <script>
+import { mapActions } from "pinia";
+import { useCorrida } from "../../../stores/corrida";
+
 export default {
   name: "CardCorrida",
   data() {
@@ -96,10 +103,51 @@ export default {
     },
   },
   methods: {
+    ...mapActions(useCorrida, ["editarTempoCorrida"]),
+
     limitarTexto(frase) {
       if (frase.length <= 10) return frase;
       return frase.substring(0, 10) + "...";
     },
+    async editarTempoEquipe(index) {
+      const tempoObj = this.corrida.temposChegadas[index];
+      const novoTempo = tempoObj.tempoEditavel || tempoObj.tempo;
+      // Chama a store diretamente
+      try {
+        const res = await this.editarTempoCorrida({
+          codigoCorrida: this.corrida.codigo,
+          codigoEquipe: tempoObj.equipe.codigo,
+          tempo: novoTempo,
+        });
+
+        if (res.status !== 200) {
+          this.$swal && this.$swal.fire({
+            title: 'Erro',
+            text: 'Não foi possível editar o tempo.' + JSON.stringify(res),
+            icon: 'error',
+          });
+        }
+
+        this.$swal && this.$swal.fire({
+          title: 'Sucesso',
+          text: 'Tempo editado com sucesso.',
+          icon: 'success',
+        });
+
+        this.corrida.temposChegadas[index].tempo = novoTempo;
+      } catch (e) {
+        this.$swal && this.$swal.fire({
+          title: 'Erro',
+          text: 'Não foi possível editar o tempo.' + JSON.stringify(e),
+          icon: 'error',
+        });
+      }
+    },
+  },
+  mounted() {
+    this.corrida.temposChegadas.forEach(t => {
+      t.tempoEditavel = t.tempo;
+    });
   },
 };
 </script>
